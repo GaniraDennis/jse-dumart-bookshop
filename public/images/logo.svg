@@ -1,0 +1,13 @@
+<svg viewBox="0 0 48 48" width="48" height="48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Book shape -->
+  <rect x="8" y="8" width="32" height="32" rx="2" fill="#1a365d" stroke="#0ea5e9" stroke-width="2"/>
+  <!-- Book spine -->
+  <path d="M 14 8 Q 16 24 14 40" stroke="#0ea5e9" stroke-width="2" fill="none"/>
+  <!-- Page lines -->
+  <line x1="18" y1="14" x2="36" y2="14" stroke="#fbbf24" stroke-width="1.5"/>
+  <line x1="18" y1="20" x2="36" y2="20" stroke="#fbbf24" stroke-width="1.5"/>
+  <line x1="18" y1="26" x2="36" y2="26" stroke="#fbbf24" stroke-width="1.5"/>
+  <line x1="18" y1="32" x2="36" y2="32" stroke="#fbbf24" stroke-width="1.5"/>
+  <!-- Decorative dot -->
+  <circle cx="24" cy="38" r="2" fill="#fbbf24"/>
+</svg>

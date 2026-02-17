@@ -1,0 +1,317 @@
+"use client"
+
+import { useState, useMemo, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
+import { products, categories, formatPrice, searchProducts, type Product } from "@/lib/data"
+import { ProductCard } from "@/components/product-card"
+import Link from "next/link"
+
+type SortOption = "featured" | "price-asc" | "price-desc" | "newest" | "rating"
+
+export default function ShopPage() {
+  const searchParams = useSearchParams()
+  const categoryParam = searchParams.get("category")
+  const searchParam = searchParams.get("q")
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam)
+  const [searchQuery, setSearchQuery] = useState(searchParam || "")
+  const [sortBy, setSortBy] = useState<SortOption>("featured")
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000])
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [showFilters, setShowFilters] = useState(false)
+
+  useEffect(() => {
+    setSelectedCategory(categoryParam)
+  }, [categoryParam])
+
+  useEffect(() => {
+    setSearchQuery(searchParam || "")
+  }, [searchParam])
+
+  const filteredProducts = useMemo(() => {
+    let result: Product[] = searchQuery ? searchProducts(searchQuery) : [...products]
+
+    if (selectedCategory) {
+      result = result.filter((p) => p.category === selectedCategory)
+    }
+
+    result = result.filter((p) => {
+      const price = p.salePrice || p.price
+      return price >= priceRange[0] && price <= priceRange[1]
+    })
+
+    switch (sortBy) {
+      case "price-asc":
+        result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price))
+        break
+      case "price-desc":
+        result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price))
+        break
+      case "newest":
+        result.sort((a, b) => (b.newArrival ? 1 : 0) - (a.newArrival ? 1 : 0))
+        break
+      case "rating":
+        result.sort((a, b) => b.rating - a.rating)
+        break
+      default:
+        result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0))
+    }
+
+    return result
+  }, [searchQuery, selectedCategory, sortBy, priceRange])
+
+  const clearFilters = () => {
+    setSelectedCategory(null)
+    setSearchQuery("")
+    setSortBy("featured")
+    setPriceRange([0, 5000])
+  }
+
+  return (
+    <div className="min-h-screen bg-muted/30">
+      {/* Breadcrumb + Header */}
+      <div className="bg-gradient-to-r from-[var(--navy)] to-[#2d4a7c] py-10">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="flex items-center gap-2 text-xs text-white/60">
+            <Link href="/" className="hover:text-white">Home</Link>
+            <i className="fa-solid fa-chevron-right text-[8px]" />
+            <span className="text-white">Shop</span>
+            {selectedCategory && (
+              <>
+                <i className="fa-solid fa-chevron-right text-[8px]" />
+                <span className="text-[var(--yellow)]">
+                  {categories.find((c) => c.slug === selectedCategory)?.name}
+                </span>
+              </>
+            )}
+          </div>
+          <h1 className="mt-2 text-2xl font-bold text-white md:text-3xl">
+            {searchQuery
+              ? `Search results for "${searchQuery}"`
+              : selectedCategory
+                ? categories.find((c) => c.slug === selectedCategory)?.name || "Shop"
+                : "All Products"}
+          </h1>
+          <p className="mt-1 text-sm text-white/70">
+            {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""} found
+          </p>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 py-8">
+        <div className="flex gap-8">
+          {/* Sidebar filters (desktop) */}
+          <aside className="hidden w-64 shrink-0 lg:block">
+            <div className="sticky top-24 space-y-6">
+              {/* Search */}
+              <div className="rounded-xl border border-border bg-white p-4">
+                <h3 className="mb-3 text-sm font-semibold text-foreground">Search</h3>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search products..."
+                    className="w-full rounded-lg border border-border bg-muted py-2 pl-3 pr-9 text-sm placeholder:text-muted-foreground focus:border-[var(--teal)] focus:outline-none"
+                  />
+                  <i className="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-xs text-muted-foreground" />
+                </div>
+              </div>
+
+              {/* Categories */}
+              <div className="rounded-xl border border-border bg-white p-4">
+                <h3 className="mb-3 text-sm font-semibold text-foreground">Categories</h3>
+                <div className="space-y-1">
+                  <button
+                    onClick={() => setSelectedCategory(null)}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${
+                      !selectedCategory ? "bg-[var(--navy)] text-white font-medium" : "text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    All Products
+                    <span className="text-xs opacity-70">{products.length}</span>
+                  </button>
+                  {categories.map((cat) => {
+                    const count = products.filter((p) => p.category === cat.slug).length
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.slug)}
+                        className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${
+                          selectedCategory === cat.slug ? "bg-[var(--navy)] text-white font-medium" : "text-foreground hover:bg-muted"
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          <i className={`fa-solid ${cat.icon} w-4 text-center text-xs ${selectedCategory === cat.slug ? "text-white" : "text-[var(--teal)]"}`} />
+                          {cat.name}
+                        </span>
+                        <span className="text-xs opacity-70">{count}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Price range */}
+              <div className="rounded-xl border border-border bg-white p-4">
+                <h3 className="mb-3 text-sm font-semibold text-foreground">Price Range</h3>
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="text-muted-foreground">{formatPrice(priceRange[0])}</span>
+                  <span className="text-muted-foreground">-</span>
+                  <span className="text-muted-foreground">{formatPrice(priceRange[1])}</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="5000"
+                  step="100"
+                  value={priceRange[1]}
+                  onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                  className="mt-3 w-full accent-[var(--teal)]"
+                />
+              </div>
+
+              {/* Clear filters */}
+              <button
+                onClick={clearFilters}
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-border py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+              >
+                <i className="fa-solid fa-filter-circle-xmark text-xs" />
+                Clear All Filters
+              </button>
+            </div>
+          </aside>
+
+          {/* Main content */}
+          <div className="flex-1">
+            {/* Toolbar */}
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-white p-3">
+              <div className="flex items-center gap-2">
+                {/* Mobile filter toggle */}
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-sm font-medium text-foreground lg:hidden"
+                >
+                  <i className="fa-solid fa-filter text-xs" />
+                  Filters
+                </button>
+
+                {/* View mode */}
+                <div className="hidden items-center gap-1 rounded-lg bg-muted p-1 sm:flex">
+                  <button
+                    onClick={() => setViewMode("grid")}
+                    className={`rounded-md px-2.5 py-1.5 text-xs ${viewMode === "grid" ? "bg-white shadow-sm text-foreground" : "text-muted-foreground"}`}
+                    aria-label="Grid view"
+                  >
+                    <i className="fa-solid fa-grid-2" />
+                  </button>
+                  <button
+                    onClick={() => setViewMode("list")}
+                    className={`rounded-md px-2.5 py-1.5 text-xs ${viewMode === "list" ? "bg-white shadow-sm text-foreground" : "text-muted-foreground"}`}
+                    aria-label="List view"
+                  >
+                    <i className="fa-solid fa-list" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="hidden text-xs text-muted-foreground sm:inline">Sort by:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as SortOption)}
+                  className="rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground focus:border-[var(--teal)] focus:outline-none"
+                >
+                  <option value="featured">Featured</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="rating">Best Rating</option>
+                  <option value="newest">Newest First</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Mobile filters panel */}
+            {showFilters && (
+              <div className="animate-slide-down mb-6 rounded-xl border border-border bg-white p-4 lg:hidden">
+                <div className="mb-4">
+                  <h3 className="mb-2 text-sm font-semibold text-foreground">Categories</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => setSelectedCategory(null)}
+                      className={`rounded-full px-3 py-1.5 text-xs font-medium ${!selectedCategory ? "bg-[var(--navy)] text-white" : "bg-muted text-foreground"}`}
+                    >
+                      All
+                    </button>
+                    {categories.map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setSelectedCategory(cat.slug)}
+                        className={`rounded-full px-3 py-1.5 text-xs font-medium ${selectedCategory === cat.slug ? "bg-[var(--navy)] text-white" : "bg-muted text-foreground"}`}
+                      >
+                        {cat.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <button onClick={clearFilters} className="text-xs font-medium text-[var(--teal)]">
+                  Clear All
+                </button>
+              </div>
+            )}
+
+            {/* Active filters */}
+            {(selectedCategory || searchQuery) && (
+              <div className="mb-4 flex flex-wrap items-center gap-2">
+                <span className="text-xs text-muted-foreground">Active:</span>
+                {selectedCategory && (
+                  <span className="flex items-center gap-1 rounded-full bg-[var(--navy)]/10 px-3 py-1 text-xs font-medium text-[var(--navy)]">
+                    {categories.find((c) => c.slug === selectedCategory)?.name}
+                    <button onClick={() => setSelectedCategory(null)}>
+                      <i className="fa-solid fa-xmark ml-1 text-[10px]" />
+                    </button>
+                  </span>
+                )}
+                {searchQuery && (
+                  <span className="flex items-center gap-1 rounded-full bg-[var(--teal)]/10 px-3 py-1 text-xs font-medium text-[var(--teal)]">
+                    &ldquo;{searchQuery}&rdquo;
+                    <button onClick={() => setSearchQuery("")}>
+                      <i className="fa-solid fa-xmark ml-1 text-[10px]" />
+                    </button>
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Products grid */}
+            {filteredProducts.length > 0 ? (
+              <div className={
+                viewMode === "grid"
+                  ? "grid grid-cols-2 gap-4 md:grid-cols-3"
+                  : "flex flex-col gap-4"
+              }>
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-white py-20">
+                <i className="fa-solid fa-magnifying-glass mb-4 text-5xl text-muted-foreground/30" />
+                <h3 className="mb-2 text-lg font-semibold text-foreground">No products found</h3>
+                <p className="mb-6 text-sm text-muted-foreground">
+                  Try adjusting your filters or search terms
+                </p>
+                <button
+                  onClick={clearFilters}
+                  className="rounded-lg bg-[var(--navy)] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[var(--teal)]"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
