@@ -1,3 +1,7 @@
+"use client"
+
+import { useScrollAnimation } from "@/hooks/use-scroll-animation"
+
 const services = [
   { icon: "fa-truck-fast", title: "Free Delivery", desc: "Free within Nairobi CBD", color: "var(--teal)" },
   { icon: "fa-bolt", title: "Same Day Delivery", desc: "Order before 2PM", color: "var(--yellow)" },
@@ -8,20 +12,27 @@ const services = [
 ]
 
 export function ServicesSection() {
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.05 })
+
   return (
-    <section className="border-y border-border bg-muted/50 py-12">
+    <section ref={ref} className="border-y border-border bg-muted/50 py-12">
       <div className="mx-auto max-w-7xl px-4">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-          {services.map((svc) => (
+          {services.map((svc, idx) => (
             <div
               key={svc.title}
-              className="flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+              className={`flex flex-col items-center gap-2 rounded-xl bg-white p-4 text-center shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-lg hover:border hover:border-[var(--teal)]/30 group ${
+                isVisible ? "animate-fade-in" : "opacity-0"
+              }`}
+              style={{
+                animationDelay: isVisible ? `${idx * 0.08}s` : "0s",
+              }}
             >
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-full"
+                className="flex h-12 w-12 items-center justify-center rounded-full transition-all duration-500 group-hover:scale-125"
                 style={{ backgroundColor: `${svc.color}15`, color: svc.color }}
               >
-                <i className={`fa-solid ${svc.icon} text-lg`} />
+                <i className={`fa-solid ${svc.icon} text-lg transition-transform group-hover:rotate-12`} />
               </div>
               <h3 className="text-xs font-semibold text-foreground">{svc.title}</h3>
               <p className="text-[10px] text-muted-foreground">{svc.desc}</p>

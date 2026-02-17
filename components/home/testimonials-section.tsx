@@ -1,10 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 import { testimonials } from "@/lib/data"
 
 export function TestimonialsSection() {
   const [current, setCurrent] = useState(0)
+  const { ref, isVisible } = useScrollAnimation({ threshold: 0.05 })
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -14,9 +16,11 @@ export function TestimonialsSection() {
   }, [])
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16">
-      <div className="mb-10 text-center">
-        <span className="mb-2 inline-block rounded-full bg-[var(--yellow)]/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--orange)]">
+    <section ref={ref} className="mx-auto max-w-7xl px-4 py-16">
+      <div className={`mb-10 text-center transition-all duration-500 ${
+        isVisible ? "animate-fade-in" : "opacity-0"
+      }`}>
+        <span className="mb-2 inline-block animate-pulse rounded-full bg-[var(--yellow)]/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider text-[var(--orange)]">
           Testimonials
         </span>
         <h2 className="text-2xl font-bold text-foreground md:text-3xl">What Our Customers Say</h2>
@@ -24,21 +28,26 @@ export function TestimonialsSection() {
 
       {/* Desktop grid */}
       <div className="hidden gap-6 md:grid md:grid-cols-3">
-        {testimonials.slice(0, 3).map((t) => (
+        {testimonials.slice(0, 3).map((t, idx) => (
           <div
             key={t.name}
-            className="flex flex-col rounded-xl border border-border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+            className={`flex flex-col rounded-xl border border-border bg-white p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-[var(--teal)]/30 ${
+              isVisible ? "animate-fade-in" : "opacity-0"
+            }`}
+            style={{
+              animationDelay: isVisible ? `${idx * 0.1}s` : "0s",
+            }}
           >
             <div className="mb-4 flex items-center gap-1">
               {Array.from({ length: 5 }).map((_, i) => (
-                <i key={i} className={`fa-solid fa-star text-xs ${i < t.rating ? "text-[var(--yellow)]" : "text-border"}`} />
+                <i key={i} className={`fa-solid fa-star text-xs transition-transform hover:scale-125 ${i < t.rating ? "text-[var(--yellow)]" : "text-border"}`} />
               ))}
             </div>
             <p className="mb-6 flex-1 text-sm leading-relaxed text-muted-foreground">
               &ldquo;{t.text}&rdquo;
             </p>
             <div className="flex items-center gap-3 border-t border-border pt-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--navy)] text-sm font-bold text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--navy)] to-[var(--teal)] text-sm font-bold text-white">
                 {t.avatar}
               </div>
               <div>
@@ -62,7 +71,7 @@ export function TestimonialsSection() {
             &ldquo;{testimonials[current].text}&rdquo;
           </p>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--navy)] text-sm font-bold text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--navy)] to-[var(--teal)] text-sm font-bold text-white">
               {testimonials[current].avatar}
             </div>
             <div>
