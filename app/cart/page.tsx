@@ -162,7 +162,7 @@ export default function CartPage() {
               {deliveryFee > 0 && (
                 <p className="rounded-lg bg-[var(--teal)]/5 px-3 py-2 text-[10px] text-[var(--teal)]">
                   <i className="fa-solid fa-info-circle mr-1" />
-                  Free delivery on orders above KES 3,000
+                  Free delivery on orders above KSh 3,000
                 </p>
               )}
               <div className="border-t border-border pt-3">

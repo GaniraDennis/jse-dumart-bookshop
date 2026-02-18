@@ -90,7 +90,7 @@ export default function CheckoutPage() {
               <i className="fa-solid fa-mobile-screen-button mb-2 text-2xl text-[var(--green)]" />
               <p className="text-sm font-medium text-foreground">M-Pesa Payment Confirmed</p>
               <p className="text-xs text-muted-foreground">
-                KES {grandTotal.toLocaleString()} received from {mpesaPhone}
+                KSh {grandTotal.toLocaleString()} received from {mpesaPhone}
               </p>
             </div>
           )}
@@ -99,7 +99,7 @@ export default function CheckoutPage() {
               <i className="fa-solid fa-money-bill-wave mb-2 text-2xl text-[var(--yellow)]" />
               <p className="text-sm font-medium text-foreground">Cash on Delivery</p>
               <p className="text-xs text-muted-foreground">
-                Please have KES {grandTotal.toLocaleString()} ready at delivery
+                Please have KSh {grandTotal.toLocaleString()} ready at delivery
               </p>
             </div>
           )}
