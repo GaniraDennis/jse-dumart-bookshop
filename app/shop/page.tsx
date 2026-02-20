@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { ProductCard } from "@/components/product-card"
 import Link from "next/link"
-import { getAllProducts } from "@/lib/supabase/products"
+import { getProducts } from "@/lib/supabase/products"
 
 export interface Product {
   id: string
@@ -66,7 +66,7 @@ export default function ShopPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getAllProducts()
+        const data = await getProducts()
         setAllProducts(data)
       } catch (error) {
         console.error('[v0] Error fetching products:', error)
