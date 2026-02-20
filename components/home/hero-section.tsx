@@ -60,67 +60,24 @@ const slides = [
 export function HeroSection() {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [mounted, setMounted] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
+    setIsMounted(true)
   }, [])
 
   useEffect(() => {
-    if (!mounted || isPaused) return
+    if (!isMounted || isPaused) return
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [isPaused, mounted])
+  }, [isPaused, isMounted])
 
-  const slide = slides[current]
+  // Always render the first slide on server, switch to current on client
+  const slideIndex = isMounted ? current : 0
+  const slide = slides[slideIndex]
   const IconComponent = iconMap[slide.icon]
-
-  if (!mounted) {
-    return (
-      <section className="relative overflow-hidden">
-        <div
-          className={`flex min-h-[420px] items-center bg-gradient-to-r ${slide.bg} transition-all duration-700 md:min-h-[480px]`}
-        >
-          <div className="relative mx-auto flex w-full max-w-7xl items-center gap-8 px-4 py-16">
-            <div className="max-w-xl">
-              <div className="animate-fade-in-up">
-                <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
-                  <IconComponent />
-                  JSEdumart Bookstore
-                </span>
-                <h1 className="mb-4 text-balance text-3xl font-extrabold leading-tight text-white md:text-5xl">
-                  {slide.title}
-                </h1>
-                <p className="mb-8 text-pretty text-base leading-relaxed text-white/80 md:text-lg">
-                  {slide.subtitle}
-                </p>
-                <div className="flex flex-wrap items-center gap-4">
-                  <Link
-                    href={slide.href}
-                    className="flex items-center gap-2 rounded-full px-8 py-3.5 text-sm font-semibold text-[var(--navy)] transition-all hover:scale-105 hover:shadow-lg"
-                    style={{ backgroundColor: slide.accent }}
-                  >
-                    {slide.cta}
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Link>
-                  <Link
-                    href="/shop"
-                    className="flex items-center gap-2 rounded-full border-2 border-white/30 px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/10"
-                  >
-                    View All Products
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
 
   return (
     <section
@@ -138,13 +95,8 @@ export function HeroSection() {
 
         <div className="relative mx-auto flex w-full max-w-7xl items-center gap-8 px-4 py-16">
           <div className="max-w-xl">
-            <div
-              key={current}
-              className="animate-fade-in-up"
-            >
-              <span
-                className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm"
-              >
+            <div className="animate-fade-in-up">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
                 <IconComponent />
                 JSEdumart Bookstore
               </span>
@@ -177,7 +129,7 @@ export function HeroSection() {
 
           {/* Big icon decoration */}
           <div className="hidden flex-1 items-center justify-center lg:flex">
-            <div key={current} className="animate-scale-in">
+            <div className="animate-scale-in">
               <div className="text-[180px] text-white/10">
                 <IconComponent />
               </div>
@@ -193,7 +145,7 @@ export function HeroSection() {
             key={i}
             onClick={() => setCurrent(i)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              i === current ? "w-8 bg-white" : "w-2 bg-white/40"
+              i === slideIndex ? "w-8 bg-white" : "w-2 bg-white/40"
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />
@@ -202,7 +154,7 @@ export function HeroSection() {
 
       {/* Nav arrows */}
       <button
-        onClick={() => setCurrent((current - 1 + slides.length) % slides.length)}
+        onClick={() => setCurrent((slideIndex - 1 + slides.length) % slides.length)}
         className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Previous slide"
       >
@@ -211,7 +163,7 @@ export function HeroSection() {
         </svg>
       </button>
       <button
-        onClick={() => setCurrent((current + 1) % slides.length)}
+        onClick={() => setCurrent((slideIndex + 1) % slides.length)}
         className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Next slide"
       >
