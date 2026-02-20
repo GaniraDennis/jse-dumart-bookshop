@@ -2,9 +2,50 @@
 
 import { useState, useMemo, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { products, categories, formatPrice, searchProducts, type Product } from "@/lib/data"
 import { ProductCard } from "@/components/product-card"
 import Link from "next/link"
+import { getAllProducts } from "@/lib/supabase/products"
+
+export interface Product {
+  id: string
+  name: string
+  slug: string
+  category: string
+  subcategory?: string
+  brand?: string
+  description: string
+  price: number
+  salePrice?: number
+  discount?: number
+  inStock: boolean
+  stockQuantity: number
+  sku: string
+  imageUrl: string
+  rating: number
+  reviewCount: number
+  featured: boolean
+  trending: boolean
+  newArrival: boolean
+}
+
+const categories = [
+  { id: 'textbooks', label: 'Textbooks' },
+  { id: 'exercise-books', label: 'Exercise Books' },
+  { id: 'stationery', label: 'Stationery' },
+  { id: 'art-supplies', label: 'Art Supplies' },
+  { id: 'school-supplies', label: 'School Supplies' },
+  { id: 'revision', label: 'Revision Materials' },
+]
+
+function searchProducts(query: string, allProducts: Product[]): Product[] {
+  const lowerQuery = query.toLowerCase()
+  return allProducts.filter(
+    (p) =>
+      p.name.toLowerCase().includes(lowerQuery) ||
+      p.description.toLowerCase().includes(lowerQuery) ||
+      p.brand?.toLowerCase().includes(lowerQuery)
+  )
+}
 
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest" | "rating"
 
@@ -19,6 +60,22 @@ export default function ShopPage() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000])
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
   const [showFilters, setShowFilters] = useState(false)
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts()
+        setAllProducts(data)
+      } catch (error) {
+        console.error('[v0] Error fetching products:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [])
 
   useEffect(() => {
     setSelectedCategory(categoryParam)
@@ -29,26 +86,26 @@ export default function ShopPage() {
   }, [searchParam])
 
   const filteredProducts = useMemo(() => {
-    let result: Product[] = searchQuery ? searchProducts(searchQuery) : [...products]
+    let result: Product[] = searchQuery ? searchProducts(searchQuery, allProducts) : [...allProducts]
 
     if (selectedCategory) {
       result = result.filter((p) => p.category === selectedCategory)
     }
 
     result = result.filter((p) => {
-      const price = p.salePrice || p.price
+      const price = p.sale_price || p.price
       return price >= priceRange[0] && price <= priceRange[1]
     })
 
     switch (sortBy) {
       case "price-asc":
-        result.sort((a, b) => (a.salePrice || a.price) - (b.salePrice || b.price))
+        result.sort((a, b) => (a.sale_price || a.price) - (b.sale_price || b.price))
         break
       case "price-desc":
-        result.sort((a, b) => (b.salePrice || b.price) - (a.salePrice || a.price))
+        result.sort((a, b) => (b.sale_price || b.price) - (a.sale_price || a.price))
         break
       case "newest":
-        result.sort((a, b) => (b.newArrival ? 1 : 0) - (a.newArrival ? 1 : 0))
+        result.sort((a, b) => (b.new_arrival ? 1 : 0) - (a.new_arrival ? 1 : 0))
         break
       case "rating":
         result.sort((a, b) => b.rating - a.rating)
@@ -58,13 +115,24 @@ export default function ShopPage() {
     }
 
     return result
-  }, [searchQuery, selectedCategory, sortBy, priceRange])
+  }, [searchQuery, selectedCategory, sortBy, priceRange, allProducts])
 
   const clearFilters = () => {
     setSelectedCategory(null)
     setSearchQuery("")
     setSortBy("featured")
     setPriceRange([0, 5000])
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-[var(--navy)]" />
+          <p className="mt-4 text-gray-600">Loading products...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -74,7 +142,9 @@ export default function ShopPage() {
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-center gap-2 text-xs text-white/60">
             <Link href="/" className="hover:text-white">Home</Link>
-            <i className="fa-solid fa-chevron-right text-[8px]" />
+            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
             <span className="text-white">Shop</span>
             {selectedCategory && (
               <>
