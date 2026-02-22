@@ -15,26 +15,35 @@ export interface Product {
   brand?: string
   description: string
   price: number
-  salePrice?: number
+  sale_price?: number
   discount?: number
-  inStock: boolean
-  stockQuantity: number
+  in_stock: boolean
+  stock_quantity: number
   sku: string
-  imageUrl: string
+  image_url: string
   rating: number
-  reviewCount: number
+  review_count: number
   featured: boolean
   trending: boolean
-  newArrival: boolean
+  new_arrival: boolean
+}
+
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
 }
 
 const categories = [
-  { id: 'textbooks', label: 'Textbooks' },
-  { id: 'exercise-books', label: 'Exercise Books' },
-  { id: 'stationery', label: 'Stationery' },
-  { id: 'art-supplies', label: 'Art Supplies' },
-  { id: 'school-supplies', label: 'School Supplies' },
-  { id: 'revision', label: 'Revision Materials' },
+  { id: 'textbooks', slug: 'textbooks', name: 'Textbooks' },
+  { id: 'exercise-books', slug: 'exercise-books', name: 'Exercise Books' },
+  { id: 'stationery', slug: 'stationery', name: 'Stationery' },
+  { id: 'art-supplies', slug: 'art-supplies', name: 'Art Supplies' },
+  { id: 'school-supplies', slug: 'school-supplies', name: 'School Supplies' },
+  { id: 'revision', slug: 'revision', name: 'Revision Materials' },
 ]
 
 function searchProducts(query: string, allProducts: Product[]): Product[] {
@@ -212,7 +221,7 @@ export default function ShopPage() {
                         }`}
                       >
                         <span className="flex items-center gap-2">
-                          <i className={`fa-solid ${cat.icon} w-4 text-center text-xs ${selectedCategory === cat.slug ? "text-white" : "text-[var(--teal)]"}`} />
+                          <span className={`inline-block h-2 w-2 rounded-full ${selectedCategory === cat.slug ? "bg-white" : "bg-[var(--teal)]"}`} />
                           {cat.name}
                         </span>
                         <span className="text-xs opacity-70">{count}</span>
@@ -262,7 +271,9 @@ export default function ShopPage() {
                   onClick={() => setShowFilters(!showFilters)}
                   className="flex items-center gap-2 rounded-lg bg-muted px-3 py-2 text-sm font-medium text-foreground lg:hidden"
                 >
-                  <i className="fa-solid fa-filter text-xs" />
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                  </svg>
                   Filters
                 </button>
 
@@ -273,14 +284,18 @@ export default function ShopPage() {
                     className={`rounded-md px-2.5 py-1.5 text-xs ${viewMode === "grid" ? "bg-white shadow-sm text-foreground" : "text-muted-foreground"}`}
                     aria-label="Grid view"
                   >
-                    <i className="fa-solid fa-grid-2" />
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" />
+                    </svg>
                   </button>
                   <button
                     onClick={() => setViewMode("list")}
                     className={`rounded-md px-2.5 py-1.5 text-xs ${viewMode === "list" ? "bg-white shadow-sm text-foreground" : "text-muted-foreground"}`}
                     aria-label="List view"
                   >
-                    <i className="fa-solid fa-list" />
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2H3V4zm0 6a1 1 0 011-1h16a1 1 0 011 1v2H3v-2zm0 6a1 1 0 011-1h16a1 1 0 011 1v2H3v-2z" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -338,7 +353,9 @@ export default function ShopPage() {
                   <span className="flex items-center gap-1 rounded-full bg-[var(--navy)]/10 px-3 py-1 text-xs font-medium text-[var(--navy)]">
                     {categories.find((c) => c.slug === selectedCategory)?.name}
                     <button onClick={() => setSelectedCategory(null)}>
-                      <i className="fa-solid fa-xmark ml-1 text-[10px]" />
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
                     </button>
                   </span>
                 )}
@@ -346,7 +363,9 @@ export default function ShopPage() {
                   <span className="flex items-center gap-1 rounded-full bg-[var(--teal)]/10 px-3 py-1 text-xs font-medium text-[var(--teal)]">
                     &ldquo;{searchQuery}&rdquo;
                     <button onClick={() => setSearchQuery("")}>
-                      <i className="fa-solid fa-xmark ml-1 text-[10px]" />
+                      <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
                     </button>
                   </span>
                 )}
@@ -364,12 +383,22 @@ export default function ShopPage() {
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
+            ) : isLoading ? (
+              <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-white py-20">
+                <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-[var(--navy)]" />
+                <h3 className="mb-2 text-lg font-semibold text-foreground">Loading products...</h3>
+                <p className="text-sm text-muted-foreground">Please wait while we fetch the latest products</p>
+              </div>
             ) : (
               <div className="flex flex-col items-center justify-center rounded-xl border border-border bg-white py-20">
-                <i className="fa-solid fa-magnifying-glass mb-4 text-5xl text-muted-foreground/30" />
+                <svg className="mb-4 h-16 w-16 text-muted-foreground/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
                 <h3 className="mb-2 text-lg font-semibold text-foreground">No products found</h3>
                 <p className="mb-6 text-sm text-muted-foreground">
-                  Try adjusting your filters or search terms
+                  {allProducts.length === 0 
+                    ? "Products are being added. Check back soon!" 
+                    : "Try adjusting your filters or search terms"}
                 </p>
                 <button
                   onClick={clearFilters}
