@@ -199,10 +199,10 @@ export default function ShopPage() {
                     }`}
                   >
                     All Products
-                    <span className="text-xs opacity-70">{products.length}</span>
+                    <span className="text-xs opacity-70">{allProducts.length}</span>
                   </button>
                   {categories.map((cat) => {
-                    const count = products.filter((p) => p.category === cat.slug).length
+                    const count = allProducts.filter((p) => p.category === cat.id).length
                     return (
                       <button
                         key={cat.id}
