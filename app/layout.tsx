@@ -88,17 +88,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="JSEdumart" />
         
-        {/* Preconnect to external resources */}
-        <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
-        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
-        
-        {/* Font Awesome CSS - optimized loading */}
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-          crossOrigin="anonymous"
-          referrerPolicy="no-referrer"
-        />
+
         
         {/* JSON-LD Structured Data */}
         <Script
