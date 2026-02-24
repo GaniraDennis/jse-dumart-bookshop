@@ -1,9 +1,16 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
 import { useCart } from "@/lib/cart-context"
-import { formatPrice } from "@/lib/data"
+
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
+}
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart()

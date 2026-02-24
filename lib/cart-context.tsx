@@ -1,7 +1,30 @@
 "use client"
 
-import { createContext, useContext, useState, useCallback, type ReactNode } from "react"
-import type { Product, CartItem } from "./data"
+import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react"
+
+export interface Product {
+  id: string
+  name: string
+  slug: string
+  category: string
+  brand?: string
+  description: string
+  price: number
+  sale_price?: number
+  discount?: number
+  in_stock: boolean
+  stock_quantity: number
+  image_url: string
+  rating: number
+  review_count: number
+  featured: boolean
+  new_arrival: boolean
+}
+
+export interface CartItem {
+  product: Product
+  quantity: number
+}
 
 interface CartContextType {
   items: CartItem[]
@@ -20,6 +43,31 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedCart = localStorage.getItem('jsdumart-cart')
+      if (savedCart) {
+        setItems(JSON.parse(savedCart))
+      }
+    } catch (error) {
+      console.error('[v0] Error loading cart from localStorage:', error)
+    }
+    setIsMounted(true)
+  }, [])
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    if (isMounted) {
+      try {
+        localStorage.setItem('jsdumart-cart', JSON.stringify(items))
+      } catch (error) {
+        console.error('[v0] Error saving cart to localStorage:', error)
+      }
+    }
+  }, [items, isMounted])
 
   const addToCart = useCallback((product: Product, quantity = 1) => {
     setItems((prev) => {
@@ -57,7 +105,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0)
   const totalPrice = items.reduce(
-    (sum, item) => sum + (item.product.sale_price ?? item.product.price) * item.quantity,
+    (sum, item) => sum + ((item.product.sale_price || item.product.price) * item.quantity),
     0
   )
 
