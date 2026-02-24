@@ -1,11 +1,32 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { flashDeals } from "@/lib/data"
+import { getProducts } from "@/lib/supabase/products"
 import { ProductCard } from "@/components/product-card"
+
+export interface Product {
+  id: string
+  name: string
+  slug: string
+  category: string
+  brand?: string
+  description: string
+  price: number
+  sale_price?: number
+  discount?: number
+  in_stock: boolean
+  stock_quantity: number
+  image_url: string
+  rating: number
+  review_count: number
+  featured: boolean
+  new_arrival: boolean
+}
 
 export function FlashDealsSection() {
   const [timeLeft, setTimeLeft] = useState({ hours: 23, minutes: 45, seconds: 30 })
+  const [products, setProducts] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -22,6 +43,21 @@ export function FlashDealsSection() {
     return () => clearInterval(timer)
   }, [])
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const allProducts = await getProducts()
+        // Show 8 products from Supabase
+        setProducts(allProducts.slice(0, 4))
+      } catch (error) {
+        console.error('[v0] Error fetching flash deals:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchProducts()
+  }, [])
+
   const scroll = (dir: "left" | "right") => {
     scrollRef.current?.scrollBy({ left: dir === "left" ? -300 : 300, behavior: "smooth" })
   }
@@ -34,7 +70,9 @@ export function FlashDealsSection() {
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <div className="flex items-center gap-2">
-              <i className="fa-solid fa-fire text-[var(--orange)]" />
+              <svg className="h-6 w-6 text-[var(--orange)]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+              </svg>
               <h2 className="text-2xl font-bold text-white">Flash Deals</h2>
             </div>
             <p className="mt-1 text-sm text-white/70">Grab these offers before they expire!</p>
@@ -66,15 +104,25 @@ export function FlashDealsSection() {
             className="absolute -left-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg transition-transform hover:scale-110"
             aria-label="Scroll left"
           >
-            <i className="fa-solid fa-chevron-left text-sm text-[var(--navy)]" />
+            <svg className="h-5 w-5 text-[var(--navy)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
           </button>
 
           <div ref={scrollRef} className="scrollbar-hide flex gap-4 overflow-x-auto px-2 pb-4" style={{ scrollbarWidth: "none" }}>
-            {flashDeals.map((product) => (
-              <div key={product.id} className="w-[240px] shrink-0">
-                <ProductCard product={product} />
+            {isLoading ? (
+              <div className="flex w-full items-center justify-center py-12">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-t-[var(--orange)]" />
               </div>
-            ))}
+            ) : products.length > 0 ? (
+              products.map((product) => (
+                <div key={product.id} className="w-[240px] shrink-0">
+                  <ProductCard product={product} />
+                </div>
+              ))
+            ) : (
+              <div className="w-full text-center text-white">No products available</div>
+            )}
           </div>
 
           <button
@@ -82,7 +130,9 @@ export function FlashDealsSection() {
             className="absolute -right-2 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-lg transition-transform hover:scale-110"
             aria-label="Scroll right"
           >
-            <i className="fa-solid fa-chevron-right text-sm text-[var(--navy)]" />
+            <svg className="h-5 w-5 text-[var(--navy)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
           </button>
         </div>
       </div>

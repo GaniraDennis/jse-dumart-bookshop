@@ -76,7 +76,9 @@ export default function CheckoutPage() {
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
         <div className="animate-fade-in-up w-full max-w-md text-center">
           <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[var(--green)]/10">
-            <i className="fa-solid fa-circle-check text-5xl text-[var(--green)]" />
+            <svg className="h-16 w-16 text-[var(--green)]" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg>
           </div>
           <h1 className="mb-2 text-2xl font-bold text-foreground">Order Placed Successfully!</h1>
           <p className="mb-2 text-muted-foreground">
@@ -87,7 +89,9 @@ export default function CheckoutPage() {
           </p>
           {paymentMethod === "mpesa" && (
             <div className="mx-auto mt-4 max-w-xs rounded-xl border border-[var(--green)]/30 bg-[var(--green)]/5 p-4">
-              <i className="fa-solid fa-mobile-screen-button mb-2 text-2xl text-[var(--green)]" />
+              <svg className="mb-2 h-8 w-8 text-[var(--green)]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
+              </svg>
               <p className="text-sm font-medium text-foreground">M-Pesa Payment Confirmed</p>
               <p className="text-xs text-muted-foreground">
                 KSh {grandTotal.toLocaleString()} received from {mpesaPhone}
@@ -96,7 +100,9 @@ export default function CheckoutPage() {
           )}
           {paymentMethod === "cod" && (
             <div className="mx-auto mt-4 max-w-xs rounded-xl border border-[var(--yellow)]/30 bg-[var(--yellow)]/5 p-4">
-              <i className="fa-solid fa-money-bill-wave mb-2 text-2xl text-[var(--yellow)]" />
+              <svg className="mb-2 h-8 w-8 text-[var(--yellow)]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 4H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V6h14v14zm-5.04-6.71l-2.75 3.54-2.59-2.59-1.41 1.41L6.5 17l4.25-5.29 2.96 3.83 1.41-1.41-1.12-1.46z" />
+              </svg>
               <p className="text-sm font-medium text-foreground">Cash on Delivery</p>
               <p className="text-xs text-muted-foreground">
                 Please have KSh {grandTotal.toLocaleString()} ready at delivery
@@ -111,7 +117,9 @@ export default function CheckoutPage() {
               href="/shop"
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--navy)] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[var(--teal)]"
             >
-              <i className="fa-solid fa-bag-shopping text-xs" />
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
               Continue Shopping
             </Link>
             <a
@@ -120,7 +128,9 @@ export default function CheckoutPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-border px-6 py-3 text-sm font-medium text-foreground transition-all hover:bg-muted"
             >
-              <i className="fa-brands fa-whatsapp text-[#25d366]" />
+              <svg className="h-4 w-4 text-[#25d366]" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.869 1.171l-.346.194-3.57-.374.76 2.77-.179.286a9.874 9.874 0 001.515 5.031h.001a9.926 9.926 0 005.313 3.116l.552.105 3.635.363-.375-3.548.202-.32c.553-.894.867-1.965.867-3.113 0-5.335-4.343-9.67-9.681-9.67z"/>
+              </svg>
               Track via WhatsApp
             </a>
           </div>
@@ -135,7 +145,9 @@ export default function CheckoutPage() {
       <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20">
         <div className="animate-fade-in-up text-center">
           <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-muted">
-            <i className="fa-solid fa-basket-shopping text-4xl text-muted-foreground" />
+            <svg className="h-12 w-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
           </div>
           <h1 className="mb-2 text-2xl font-bold text-foreground">Nothing to Checkout</h1>
           <p className="mb-8 text-sm text-muted-foreground">Add some items to your cart first.</p>
@@ -143,7 +155,9 @@ export default function CheckoutPage() {
             href="/shop"
             className="inline-flex items-center gap-2 rounded-full bg-[var(--navy)] px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[var(--teal)]"
           >
-            <i className="fa-solid fa-bag-shopping" />
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
             Browse Products
           </Link>
         </div>
@@ -151,10 +165,28 @@ export default function CheckoutPage() {
     )
   }
 
-  const steps: { key: Step; label: string; icon: string }[] = [
-    { key: "shipping", label: "Shipping", icon: "fa-truck" },
-    { key: "payment", label: "Payment", icon: "fa-credit-card" },
-    { key: "confirm", label: "Confirm", icon: "fa-check" },
+  const stepIcons = {
+    shipping: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M18 18.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM9 18.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20 8H4V4h16v4zm-11 11H3V9h6v10z"/>
+      </svg>
+    ),
+    payment: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M20 8H4V4h16m0 12H4v-6h16m0 8H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2z"/>
+      </svg>
+    ),
+    confirm: (
+      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+      </svg>
+    ),
+  }
+
+  const steps: { key: Step; label: string }[] = [
+    { key: "shipping", label: "Shipping" },
+    { key: "payment", label: "Payment" },
+    { key: "confirm", label: "Confirm" },
   ]
 
   const stepIndex = steps.findIndex((s) => s.key === step)
@@ -165,9 +197,13 @@ export default function CheckoutPage() {
         {/* Breadcrumb */}
         <nav className="animate-fade-in mb-6 flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/" className="transition-colors hover:text-[var(--teal)]">Home</Link>
-          <i className="fa-solid fa-chevron-right text-[8px]" />
+          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
           <Link href="/cart" className="transition-colors hover:text-[var(--teal)]">Cart</Link>
-          <i className="fa-solid fa-chevron-right text-[8px]" />
+          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
           <span className="font-medium text-foreground">Checkout</span>
         </nav>
 
@@ -185,9 +221,11 @@ export default function CheckoutPage() {
                     }`}
                   >
                     {i < stepIndex ? (
-                      <i className="fa-solid fa-check text-xs" />
+                      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                      </svg>
                     ) : (
-                      <i className={`fa-solid ${s.icon} text-xs`} />
+                      stepIcons[s.key]
                     )}
                   </div>
                   <span className={`mt-2 text-xs font-medium ${i <= stepIndex ? "text-[var(--navy)]" : "text-muted-foreground"}`}>
@@ -211,13 +249,17 @@ export default function CheckoutPage() {
             {step === "shipping" && (
               <div className="animate-fade-in-up rounded-2xl border border-border bg-white p-6 shadow-sm md:p-8">
                 <h2 className="mb-6 flex items-center gap-2 text-lg font-bold text-foreground">
-                  <i className="fa-solid fa-truck text-[var(--teal)]" />
+                  <svg className="h-5 w-5 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18 18.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM9 18.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20 8H4V4h16v4zm-11 11H3V9h6v10z"/>
+                  </svg>
                   Shipping Details
                 </h2>
 
                 {!isAuthenticated && (
                   <div className="mb-6 flex items-center gap-3 rounded-xl bg-[var(--teal)]/5 p-4">
-                    <i className="fa-solid fa-circle-info text-[var(--teal)]" />
+                    <svg className="h-5 w-5 shrink-0 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     <p className="text-sm text-muted-foreground">
                       Already have an account?{" "}
                       <Link href="/auth/signin" className="font-semibold text-[var(--teal)] hover:underline">Sign in</Link>{" "}
@@ -254,7 +296,9 @@ export default function CheckoutPage() {
                   <div>
                     <label htmlFor="shEmail" className="mb-1.5 block text-sm font-medium text-foreground">Email</label>
                     <div className="relative">
-                      <i className="fa-solid fa-envelope absolute left-3.5 top-3.5 text-xs text-muted-foreground" />
+                      <svg className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
                       <input
                         id="shEmail"
                         type="email"
@@ -269,7 +313,9 @@ export default function CheckoutPage() {
                   <div>
                     <label htmlFor="shPhone" className="mb-1.5 block text-sm font-medium text-foreground">Phone Number</label>
                     <div className="relative">
-                      <i className="fa-solid fa-phone absolute left-3.5 top-3.5 text-xs text-muted-foreground" />
+                      <svg className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
                       <input
                         id="shPhone"
                         type="tel"
@@ -284,7 +330,10 @@ export default function CheckoutPage() {
                   <div className="sm:col-span-2">
                     <label htmlFor="shAddress" className="mb-1.5 block text-sm font-medium text-foreground">Delivery Address</label>
                     <div className="relative">
-                      <i className="fa-solid fa-location-dot absolute left-3.5 top-3.5 text-xs text-muted-foreground" />
+                      <svg className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
                       <input
                         id="shAddress"
                         type="text"
@@ -344,7 +393,9 @@ export default function CheckoutPage() {
                   className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--navy)] py-4 text-sm font-semibold text-white transition-all hover:bg-[var(--teal)] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Continue to Payment
-                  <i className="fa-solid fa-arrow-right text-xs" />
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </button>
               </div>
             )}
@@ -353,7 +404,9 @@ export default function CheckoutPage() {
             {step === "payment" && (
               <div className="animate-fade-in-up rounded-2xl border border-border bg-white p-6 shadow-sm md:p-8">
                 <h2 className="mb-6 flex items-center gap-2 text-lg font-bold text-foreground">
-                  <i className="fa-solid fa-credit-card text-[var(--teal)]" />
+                  <svg className="h-5 w-5 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 8H4V4h16m0 12H4v-6h16m0 8H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2z"/>
+                  </svg>
                   Payment Method
                 </h2>
 
