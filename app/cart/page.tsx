@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import { useCart } from "@/lib/cart-context"
 
 function formatPrice(price: number): string {
@@ -14,6 +15,24 @@ function formatPrice(price: number): string {
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart()
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+    console.log('[v0] Cart mounted, items:', items)
+  }, [items])
+
+  // Show empty state while hydrating
+  if (!isMounted) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-gray-300 border-t-[var(--navy)]" />
+          <p className="mt-4 text-gray-600">Loading cart...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (items.length === 0) {
     return (

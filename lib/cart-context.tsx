@@ -13,12 +13,14 @@ export interface Product {
   sale_price?: number
   discount?: number
   in_stock: boolean
-  stock_quantity: number
+  stock_quantity?: number
   image_url: string
   rating: number
   review_count: number
   featured: boolean
   new_arrival: boolean
+  created_at?: string
+  updated_at?: string
 }
 
 export interface CartItem {
@@ -70,16 +72,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items, isMounted])
 
   const addToCart = useCallback((product: Product, quantity = 1) => {
+    console.log('[v0] Adding to cart:', product.name, 'quantity:', quantity)
     setItems((prev) => {
       const existing = prev.find((item) => item.product.id === product.id)
+      let newItems
       if (existing) {
-        return prev.map((item) =>
+        newItems = prev.map((item) =>
           item.product.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         )
+      } else {
+        newItems = [...prev, { product, quantity }]
       }
-      return [...prev, { product, quantity }]
+      console.log('[v0] Updated cart items:', newItems)
+      return newItems
     })
     setIsCartOpen(true)
     setTimeout(() => setIsCartOpen(false), 2000)
