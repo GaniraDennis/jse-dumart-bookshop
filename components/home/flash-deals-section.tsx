@@ -48,7 +48,7 @@ export function FlashDealsSection() {
       try {
         const allProducts = await getProducts()
         // Show 8 products from Supabase
-        setProducts(allProducts.slice(0, 8))
+        setProducts(allProducts.slice(0, 4))
       } catch (error) {
         console.error('[v0] Error fetching flash deals:', error)
       } finally {
@@ -71,7 +71,7 @@ export function FlashDealsSection() {
           <div>
             <div className="flex items-center gap-2">
               <svg className="h-6 w-6 text-[var(--orange)]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
               </svg>
               <h2 className="text-2xl font-bold text-white">Flash Deals</h2>
             </div>
