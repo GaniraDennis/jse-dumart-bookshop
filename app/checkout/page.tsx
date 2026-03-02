@@ -588,14 +588,14 @@ export default function CheckoutPage() {
                     {items.map((item) => (
                       <div key={item.product.id} className="flex items-center gap-3">
                         <div className="h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-muted">
-                          <img src={item.product.image} alt={item.product.name} className="h-full w-full object-cover" />
+                          <img src={item.product.image_url} alt={item.product.name} className="h-full w-full object-cover" />
                         </div>
                         <div className="flex-1">
                           <p className="text-sm font-medium text-foreground line-clamp-1">{item.product.name}</p>
                           <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                         </div>
                         <p className="text-sm font-bold text-[var(--navy)]">
-                          {formatPrice((item.product.salePrice ?? item.product.price) * item.quantity)}
+                          {formatPrice((item.product.sale_price ?? item.product.price) * item.quantity)}
                         </p>
                       </div>
                     ))}
