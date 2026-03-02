@@ -40,18 +40,46 @@ export default function CheckoutPage() {
     setShipping((prev) => ({ ...prev, [field]: value }))
 
   const handleMpesaPayment = async () => {
-    setIsProcessing(true)
-    setMpesaPromptSent(false)
+    try {
+      setIsProcessing(true)
+      setMpesaPromptSent(false)
 
-    // Simulate STK Push delay
-    await new Promise((r) => setTimeout(r, 1500))
-    setMpesaPromptSent(true)
+      console.log('[v0] Initiating M-Pesa payment with phone:', mpesaPhone)
 
-    // Simulate waiting for M-Pesa confirmation
-    await new Promise((r) => setTimeout(r, 3000))
-    setIsProcessing(false)
-    setOrderPlaced(true)
-    clearCart()
+      // Call M-Pesa API endpoint
+      const response = await fetch('/api/payments/initiate-mpesa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phoneNumber: mpesaPhone,
+          amount: grandTotal,
+          orderNumber: `JSE${Date.now().toString().slice(-6)}`,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to initiate M-Pesa payment')
+      }
+
+      const result = await response.json()
+      console.log('[v0] M-Pesa STK push initiated:', result)
+
+      setMpesaPromptSent(true)
+
+      // Wait for user to complete M-Pesa transaction (poll for confirmation)
+      // In production, this would use a callback webhook from M-Pesa
+      // For now, wait and then complete the order
+      await new Promise((r) => setTimeout(r, 5000))
+
+      setIsProcessing(false)
+      setOrderPlaced(true)
+      clearCart()
+    } catch (error) {
+      console.error('[v0] M-Pesa payment error:', error)
+      setIsProcessing(false)
+      alert(error instanceof Error ? error.message : 'Payment failed. Please try again.')
+    }
   }
 
   const handleCODPayment = async () => {
