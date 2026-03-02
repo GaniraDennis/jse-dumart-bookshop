@@ -43,12 +43,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      {/* Discount badge */}
-      {product.discount && product.discount > 0 && (
-        <span className="absolute left-3 top-3 z-10 rounded-full bg-[var(--orange)] px-2.5 py-0.5 text-[10px] font-bold text-white">
-          -{product.discount}%
-        </span>
-      )}
+      {/* New arrival badge */}
       {product.new_arrival && (
         <span className="absolute right-3 top-3 z-10 rounded-full bg-[var(--green)] px-2.5 py-0.5 text-[10px] font-bold text-white">
           NEW
