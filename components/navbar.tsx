@@ -234,11 +234,11 @@ export function Navbar() {
                   {items.slice(-2).map((item) => (
                     <div key={item.product.id} className="flex items-center gap-3 rounded-lg bg-muted/50 p-2">
                       <div className="h-12 w-12 overflow-hidden rounded-lg bg-muted">
-                        <img src={item.product.image} alt={item.product.name} className="h-full w-full object-cover" />
+                        <img src={item.product.image_url} alt={item.product.name} className="h-full w-full object-cover" />
                       </div>
                       <div className="flex-1">
                         <p className="text-xs font-medium text-foreground line-clamp-1">{item.product.name}</p>
-                        <p className="text-xs text-[var(--teal)]">{formatPrice(item.product.salePrice ?? item.product.price)} x{item.quantity}</p>
+                        <p className="text-xs text-[var(--teal)]">{formatPrice(item.product.sale_price ?? item.product.price)} x{item.quantity}</p>
                       </div>
                       <button onClick={() => removeFromCart(item.product.id)} className="text-muted-foreground hover:text-destructive">
                         <i className="fa-solid fa-xmark text-xs" />
