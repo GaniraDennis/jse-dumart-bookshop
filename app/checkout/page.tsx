@@ -562,7 +562,9 @@ export default function CheckoutPage() {
                 <div className="rounded-2xl border border-border bg-white p-6 shadow-sm">
                   <div className="mb-4 flex items-center justify-between">
                     <h3 className="flex items-center gap-2 font-bold text-foreground">
-                      <i className="fa-solid fa-credit-card text-[var(--teal)]" />
+                      <svg className="h-5 w-5 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 8H4V4h16m0 12H4v-6h16m0 8H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2z"/>
+                      </svg>
                       Payment Method
                     </h3>
                     <button onClick={() => setStep("payment")} className="text-xs font-medium text-[var(--teal)] hover:underline">
@@ -572,7 +574,9 @@ export default function CheckoutPage() {
                   {paymentMethod === "mpesa" ? (
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4caf50]">
-                        <i className="fa-solid fa-mobile-screen-button text-white" />
+                        <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
+                        </svg>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-foreground">M-Pesa</p>
@@ -582,7 +586,9 @@ export default function CheckoutPage() {
                   ) : (
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--yellow)]">
-                        <i className="fa-solid fa-money-bill-wave text-[var(--navy)]" />
+                        <svg className="h-5 w-5 text-[var(--navy)]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                        </svg>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-foreground">Cash on Delivery</p>
@@ -595,7 +601,9 @@ export default function CheckoutPage() {
                 {/* Items Summary */}
                 <div className="rounded-2xl border border-border bg-white p-6 shadow-sm">
                   <h3 className="mb-4 flex items-center gap-2 font-bold text-foreground">
-                    <i className="fa-solid fa-box text-[var(--teal)]" />
+                    <svg className="h-5 w-5 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M21 16V8c0-1.1-.9-2-2-2h-3V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-16 0V8h14v8H5z"/>
+                    </svg>
                     Order Items ({items.length})
                   </h3>
                   <div className="space-y-3">
