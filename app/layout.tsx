@@ -88,6 +88,14 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="JSEdumart" />
         
+        {/* FontAwesome CDN */}
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-EvBWYkDuq1Om4i33k/4vM5VIqH5DP+6l7ZGYdNm9xVbVJRYgCM7z7Yt5+lfAC4wMKAHxq1M5cVXrpN4eSKHdg=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
 
         
         {/* JSON-LD Structured Data */}
