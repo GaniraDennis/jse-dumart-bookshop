@@ -74,9 +74,7 @@ export default function CheckoutPage() {
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
         <div className="animate-fade-in-up w-full max-w-md text-center">
           <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[var(--green)]/10">
-            <svg className="h-16 w-16 text-[var(--green)]" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-            </svg>
+            <i className="fa-solid fa-circle-check text-5xl text-[var(--green)]"></i>
           </div>
           <h1 className="mb-2 text-2xl font-bold text-foreground">Order Placed Successfully!</h1>
           <p className="mb-2 text-muted-foreground">
@@ -87,10 +85,8 @@ export default function CheckoutPage() {
           </p>
           {paymentMethod === "mpesa" && (
             <div className="mx-auto mt-4 max-w-xs rounded-xl border border-[var(--green)]/30 bg-[var(--green)]/5 p-4">
-              <svg className="mb-2 h-8 w-8 text-[var(--green)]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
-              </svg>
-              <p className="text-sm font-medium text-foreground">M-Pesa Payment Confirmed</p>
+              <i className="fa-solid fa-mobile-screen-button mb-2 text-2xl text-[var(--green)]"></i>
+              <p className="text-sm font-medium text-foreground">M-Pesa Payment Pending</p>
               <p className="text-xs text-muted-foreground">
                 KSh {grandTotal.toLocaleString()} received from {mpesaPhone}
               </p>

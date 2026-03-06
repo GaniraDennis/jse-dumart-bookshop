@@ -70,9 +70,7 @@ export function FlashDealsSection() {
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <div className="flex items-center gap-2">
-              <svg className="h-6 w-6 text-[var(--orange)]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-              </svg>
+              <i className="fa-solid fa-fire text-2xl text-[var(--orange)]"></i>
               <h2 className="text-2xl font-bold text-white">Flash Deals</h2>
             </div>
             <p className="mt-1 text-sm text-white/70">Grab these offers before they expire!</p>

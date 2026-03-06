@@ -151,9 +151,7 @@ export default function ShopPage() {
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-center gap-2 text-xs text-white/60">
             <Link href="/" className="hover:text-white">Home</Link>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <i className="fa-solid fa-chevron-right text-[8px]" />
             <span className="text-white">Shop</span>
             {selectedCategory && (
               <>
