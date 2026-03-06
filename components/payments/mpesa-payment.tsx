@@ -78,9 +78,7 @@ export function MpesaPayment({
         <div className="rounded-lg bg-green-50 p-4 border border-green-200">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-              <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+              <i className="fa-solid fa-check text-lg text-green-600"></i>
             </div>
             <div>
               <p className="font-semibold text-green-900">M-Pesa Prompt Sent</p>

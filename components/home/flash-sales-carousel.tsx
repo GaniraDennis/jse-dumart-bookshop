@@ -72,9 +72,7 @@ export function FlashSalesCarousel() {
           className="hidden items-center gap-2 text-sm font-medium text-[var(--teal)] transition-colors hover:text-[var(--navy)] sm:flex"
         >
           View All
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <i className="fa-solid fa-arrow-right text-sm"></i>
         </Link>
       </div>
 
@@ -98,9 +96,7 @@ export function FlashSalesCarousel() {
           className="absolute -left-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:bg-[var(--navy)] hover:text-white"
           aria-label="Previous products"
         >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
+          <i className="fa-solid fa-chevron-left text-sm"></i>
         </button>
 
         <button
@@ -108,9 +104,7 @@ export function FlashSalesCarousel() {
           className="absolute -right-4 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg transition-all hover:bg-[var(--navy)] hover:text-white"
           aria-label="Next products"
         >
-          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <i className="fa-solid fa-chevron-right text-sm"></i>
         </button>
       </div>
 
@@ -135,9 +129,7 @@ export function FlashSalesCarousel() {
           className="inline-flex items-center gap-2 rounded-full bg-[var(--navy)] px-8 py-3 text-sm font-semibold text-white transition-all hover:bg-[var(--teal)]"
         >
           View All Flash Sales
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+          <i className="fa-solid fa-arrow-right text-sm"></i>
         </Link>
       </div>
     </section>

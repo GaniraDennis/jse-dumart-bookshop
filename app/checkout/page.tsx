@@ -474,7 +474,7 @@ export default function CheckoutPage() {
                     <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
                       paymentMethod === "mpesa" ? "border-[#4caf50] bg-[#4caf50]" : "border-muted-foreground/30"
                     }`}>
-                      {paymentMethod === "mpesa" && <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>}
+                      {paymentMethod === "mpesa" && <i className="fa-solid fa-check text-xs text-white"></i>}
                     </div>
                   </button>
 
@@ -490,9 +490,7 @@ export default function CheckoutPage() {
                     <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${
                       paymentMethod === "cod" ? "bg-[var(--yellow)] text-[var(--navy)]" : "bg-muted text-muted-foreground"
                     }`}>
-                      <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                      </svg>
+                      <i className="fa-solid fa-hand-holding-dollar text-xl"></i>
                     </div>
                     <div className="flex-1">
                       <span className="font-bold text-foreground">Cash on Delivery</span>
@@ -503,7 +501,7 @@ export default function CheckoutPage() {
                     <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
                       paymentMethod === "cod" ? "border-[var(--yellow)] bg-[var(--yellow)]" : "border-muted-foreground/30"
                     }`}>
-                      {paymentMethod === "cod" && <svg className="h-3 w-3 text-[var(--navy)]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>}
+                      {paymentMethod === "cod" && <i className="fa-solid fa-check text-xs text-[var(--navy)]"></i>}
                     </div>
                   </button>
                 </div>
