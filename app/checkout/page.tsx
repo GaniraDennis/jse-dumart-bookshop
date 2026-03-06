@@ -40,46 +40,16 @@ export default function CheckoutPage() {
     setShipping((prev) => ({ ...prev, [field]: value }))
 
   const handleMpesaPayment = async () => {
-    try {
-      setIsProcessing(true)
-      setMpesaPromptSent(false)
-
-      console.log('[v0] Initiating M-Pesa payment with phone:', mpesaPhone)
-
-      // Call M-Pesa API endpoint
-      const response = await fetch('/api/payments/initiate-mpesa', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phoneNumber: mpesaPhone,
-          amount: grandTotal,
-          orderNumber: `JSE${Date.now().toString().slice(-6)}`,
-        }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to initiate M-Pesa payment')
-      }
-
-      const result = await response.json()
-      console.log('[v0] M-Pesa STK push initiated:', result)
-
-      setMpesaPromptSent(true)
-
-      // Wait for user to complete M-Pesa transaction (poll for confirmation)
-      // In production, this would use a callback webhook from M-Pesa
-      // For now, wait and then complete the order
-      await new Promise((r) => setTimeout(r, 5000))
-
-      setIsProcessing(false)
-      setOrderPlaced(true)
-      clearCart()
-    } catch (error) {
-      console.error('[v0] M-Pesa payment error:', error)
-      setIsProcessing(false)
-      alert(error instanceof Error ? error.message : 'Payment failed. Please try again.')
-    }
+    setIsProcessing(true)
+    // Show paybill details to user - they will send payment manually
+    setMpesaPromptSent(true)
+    
+    // Complete order immediately with paybill pending status
+    await new Promise((r) => setTimeout(r, 1000))
+    
+    setIsProcessing(false)
+    setOrderPlaced(true)
+    clearCart()
   }
 
   const handleCODPayment = async () => {
@@ -501,37 +471,41 @@ export default function CheckoutPage() {
                   </button>
                 </div>
 
-                {/* M-Pesa Phone Input */}
+                {/* M-Pesa Paybill Details */}
                 {paymentMethod === "mpesa" && (
                   <div className="mt-6 animate-fade-in rounded-xl border border-[#4caf50]/20 bg-[#4caf50]/5 p-5">
                     <div className="mb-4 flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4caf50]">
-                        <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
-                        </svg>
+                        <i className="fa-brands fa-m text-white font-bold" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-foreground">M-Pesa Payment</p>
-                        <p className="text-xs text-muted-foreground">Enter your Safaricom number to receive STK push</p>
+                        <p className="text-sm font-semibold text-foreground">M-Pesa Paybill Payment</p>
+                        <p className="text-xs text-muted-foreground">Use your M-Pesa to pay via paybill</p>
                       </div>
                     </div>
-                    <div className="relative">
-                      <span className="absolute left-4 top-3.5 text-sm font-medium text-muted-foreground">+254</span>
-                      <input
-                        type="tel"
-                        value={mpesaPhone}
-                        onChange={(e) => setMpesaPhone(e.target.value)}
-                        placeholder="7XX XXX XXX"
-                        maxLength={13}
-                        className="w-full rounded-lg border border-[#4caf50]/30 bg-white py-3 pl-16 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-[#4caf50] focus:outline-none focus:ring-2 focus:ring-[#4caf50]/20"
-                      />
+                    <div className="space-y-3">
+                      <div className="rounded-lg bg-white p-4 border border-[#4caf50]/20">
+                        <p className="text-xs text-muted-foreground mb-1">Business/Till Number</p>
+                        <p className="text-2xl font-bold text-[#4caf50]">7815771</p>
+                      </div>
+                      <div className="rounded-lg bg-white p-4 border border-[#4caf50]/20">
+                        <p className="text-xs text-muted-foreground mb-1">Amount to Pay</p>
+                        <p className="text-2xl font-bold text-foreground">{formatPrice(grandTotal)}</p>
+                      </div>
+                      <div className="rounded-lg bg-white p-4 border border-[#4caf50]/20">
+                        <p className="text-xs text-muted-foreground mb-1">Your Order Reference</p>
+                        <p className="text-lg font-mono font-bold text-[var(--teal)]">JSE{Date.now().toString().slice(-6)}</p>
+                      </div>
                     </div>
-                    <div className="mt-3 flex items-start gap-2">
-                      <svg className="h-4 w-4 mt-0.5 text-[#4caf50] shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-                      </svg>
-                      <p className="text-[11px] text-muted-foreground">
-                        You will receive an STK push notification on your phone. Send to Till <strong className="text-foreground">7815771</strong>. Enter your M-Pesa PIN to complete the payment of <strong className="text-foreground">{formatPrice(grandTotal)}</strong>.
+                    <div className="mt-4 bg-[#4caf50]/10 rounded-lg p-3 border-l-4 border-[#4caf50]">
+                      <p className="text-xs text-muted-foreground">
+                        <strong className="text-foreground block mb-1">Payment Steps:</strong>
+                        1. Open M-Pesa on your phone<br/>
+                        2. Go to Lipa Na M-Pesa → Paybill<br/>
+                        3. Enter Business No: <strong>7815771</strong><br/>
+                        4. Enter Account Ref: <strong>JSE{Date.now().toString().slice(-6)}</strong><br/>
+                        5. Enter Amount: <strong>{formatPrice(grandTotal)}</strong><br/>
+                        6. Enter your M-Pesa PIN and confirm
                       </p>
                     </div>
                   </div>
