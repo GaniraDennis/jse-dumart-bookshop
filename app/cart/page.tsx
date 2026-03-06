@@ -39,9 +39,7 @@ export default function CartPage() {
       <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 py-20">
         <div className="animate-fade-in-up text-center">
           <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-muted">
-            <svg className="h-12 w-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+            <i className="fa-solid fa-shopping-cart text-4xl text-muted-foreground"></i>
           </div>
           <h1 className="mb-2 text-2xl font-bold text-foreground">Your Cart is Empty</h1>
           <p className="mb-8 text-sm text-muted-foreground">
@@ -51,9 +49,7 @@ export default function CartPage() {
             href="/shop"
             className="inline-flex items-center gap-2 rounded-full bg-[var(--navy)] px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[var(--teal)] hover:scale-105"
           >
-            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <i className="fa-solid fa-arrow-left text-sm"></i>
             Continue Shopping
           </Link>
         </div>
@@ -69,9 +65,7 @@ export default function CartPage() {
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground" aria-label="Breadcrumb">
         <Link href="/" className="transition-colors hover:text-[var(--teal)]">Home</Link>
-        <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+        <i className="fa-solid fa-chevron-right text-[8px]"></i>
         <span className="font-medium text-foreground">Shopping Cart</span>
       </nav>
 
@@ -114,9 +108,7 @@ export default function CartPage() {
                       className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-all hover:bg-destructive/10 hover:text-destructive"
                       aria-label={`Remove ${item.product.name}`}
                     >
-                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
+                      <i className="fa-solid fa-trash-can text-sm"></i>
                     </button>
                   </div>
 
@@ -128,9 +120,7 @@ export default function CartPage() {
                         className="flex h-8 w-8 items-center justify-center rounded-l-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                         aria-label="Decrease quantity"
                       >
-                        <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M5 12h14" />
-                        </svg>
+                        <i className="fa-solid fa-minus text-xs"></i>
                       </button>
                       <span className="flex h-8 w-10 items-center justify-center text-sm font-medium text-foreground">
                         {item.quantity}
@@ -140,9 +130,7 @@ export default function CartPage() {
                         className="flex h-8 w-8 items-center justify-center rounded-r-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                         aria-label="Increase quantity"
                       >
-                        <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 5v14m7-7H5" />
-                        </svg>
+                        <i className="fa-solid fa-plus text-xs"></i>
                       </button>
                     </div>
 

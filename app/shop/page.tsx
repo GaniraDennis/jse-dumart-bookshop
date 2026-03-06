@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { ProductCard } from "@/components/product-card"
 import Link from "next/link"
 import { getProducts } from "@/lib/supabase/products"
+import { useAuth } from "@/lib/auth-context"
 
 export interface Product {
   id: string
@@ -59,6 +60,8 @@ function searchProducts(query: string, allProducts: Product[]): Product[] {
 type SortOption = "featured" | "price-asc" | "price-desc" | "newest" | "rating"
 
 export default function ShopPage() {
+  const router = useRouter()
+  const { isAuthenticated, user } = useAuth()
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get("category")
   const searchParam = searchParams.get("q")
@@ -71,6 +74,13 @@ export default function ShopPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [allProducts, setAllProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  // Check authentication
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/login?redirect=/shop')
+    }
+  }, [isAuthenticated, router])
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -133,6 +143,30 @@ export default function ShopPage() {
     setPriceRange([0, 5000])
   }
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center" suppressHydrationWarning>
+        <div className="text-center max-w-md">
+          <div className="h-20 w-20 rounded-full bg-[var(--navy)]/10 flex items-center justify-center mx-auto mb-6">
+            <i className="fa-solid fa-lock text-4xl text-[var(--navy)]"></i>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Access Restricted</h2>
+          <p className="text-gray-600 mb-6">You need to be logged in to browse our shop. Sign in to your account or create one to get started.</p>
+          <div className="flex gap-3 justify-center">
+            <Link href="/login" className="bg-[var(--navy)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--teal)] transition-all">
+              <i className="fa-solid fa-sign-in-alt mr-2"></i>
+              Sign In
+            </Link>
+            <Link href="/register" className="border-2 border-[var(--navy)] text-[var(--navy)] px-6 py-3 rounded-lg font-semibold hover:bg-[var(--navy)]/5 transition-all">
+              <i className="fa-solid fa-user-plus mr-2"></i>
+              Create Account
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-muted/30 flex items-center justify-center">
@@ -151,9 +185,7 @@ export default function ShopPage() {
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-center gap-2 text-xs text-white/60">
             <Link href="/" className="hover:text-white">Home</Link>
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            <i className="fa-solid fa-chevron-right text-[8px]" />
             <span className="text-white">Shop</span>
             {selectedCategory && (
               <>

@@ -22,6 +22,47 @@ export default function CheckoutPage() {
   const [orderPlaced, setOrderPlaced] = useState(false)
   const [mpesaPromptSent, setMpesaPromptSent] = useState(false)
 
+  // Check authentication
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4" suppressHydrationWarning>
+        <div className="text-center max-w-md">
+          <div className="h-20 w-20 rounded-full bg-[var(--navy)]/10 flex items-center justify-center mx-auto mb-6">
+            <i className="fa-solid fa-lock text-4xl text-[var(--navy)]"></i>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Login Required</h2>
+          <p className="text-gray-600 mb-6">You need to be logged in to proceed with checkout.</p>
+          <button 
+            onClick={() => router.push('/login?redirect=/checkout')}
+            className="bg-[var(--navy)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--teal)] transition-all inline-flex items-center gap-2 w-full justify-center"
+          >
+            <i className="fa-solid fa-sign-in-alt"></i>
+            Sign In to Continue
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4" suppressHydrationWarning>
+        <div className="text-center max-w-md">
+          <i className="fa-solid fa-shopping-cart text-5xl text-muted-foreground/30 mb-4"></i>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Cart is Empty</h2>
+          <p className="text-gray-600 mb-6">Add some items to your cart before checkout.</p>
+          <Link 
+            href="/shop"
+            className="bg-[var(--navy)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--teal)] transition-all inline-flex items-center gap-2"
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   const [shipping, setShipping] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -74,9 +115,7 @@ export default function CheckoutPage() {
       <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
         <div className="animate-fade-in-up w-full max-w-md text-center">
           <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[var(--green)]/10">
-            <svg className="h-16 w-16 text-[var(--green)]" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-            </svg>
+            <i className="fa-solid fa-circle-check text-5xl text-[var(--green)]"></i>
           </div>
           <h1 className="mb-2 text-2xl font-bold text-foreground">Order Placed Successfully!</h1>
           <p className="mb-2 text-muted-foreground">
@@ -87,10 +126,8 @@ export default function CheckoutPage() {
           </p>
           {paymentMethod === "mpesa" && (
             <div className="mx-auto mt-4 max-w-xs rounded-xl border border-[var(--green)]/30 bg-[var(--green)]/5 p-4">
-              <svg className="mb-2 h-8 w-8 text-[var(--green)]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
-              </svg>
-              <p className="text-sm font-medium text-foreground">M-Pesa Payment Confirmed</p>
+              <i className="fa-solid fa-mobile-screen-button mb-2 text-2xl text-[var(--green)]"></i>
+              <p className="text-sm font-medium text-foreground">M-Pesa Payment Pending</p>
               <p className="text-xs text-muted-foreground">
                 KSh {grandTotal.toLocaleString()} received from {mpesaPhone}
               </p>
@@ -437,7 +474,7 @@ export default function CheckoutPage() {
                     <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
                       paymentMethod === "mpesa" ? "border-[#4caf50] bg-[#4caf50]" : "border-muted-foreground/30"
                     }`}>
-                      {paymentMethod === "mpesa" && <svg className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>}
+                      {paymentMethod === "mpesa" && <i className="fa-solid fa-check text-xs text-white"></i>}
                     </div>
                   </button>
 
@@ -453,9 +490,7 @@ export default function CheckoutPage() {
                     <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${
                       paymentMethod === "cod" ? "bg-[var(--yellow)] text-[var(--navy)]" : "bg-muted text-muted-foreground"
                     }`}>
-                      <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-                      </svg>
+                      <i className="fa-solid fa-hand-holding-dollar text-xl"></i>
                     </div>
                     <div className="flex-1">
                       <span className="font-bold text-foreground">Cash on Delivery</span>
@@ -466,7 +501,7 @@ export default function CheckoutPage() {
                     <div className={`flex h-5 w-5 items-center justify-center rounded-full border-2 ${
                       paymentMethod === "cod" ? "border-[var(--yellow)] bg-[var(--yellow)]" : "border-muted-foreground/30"
                     }`}>
-                      {paymentMethod === "cod" && <svg className="h-3 w-3 text-[var(--navy)]" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" /></svg>}
+                      {paymentMethod === "cod" && <i className="fa-solid fa-check text-xs text-[var(--navy)]"></i>}
                     </div>
                   </button>
                 </div>

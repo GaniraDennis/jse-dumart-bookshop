@@ -95,6 +95,13 @@ export default function RootLayout({
           integrity="sha512-EvBWYkDuq1Om4i33k/4vM5VIqH5DP+6l7ZGYdNm9xVbVJRYgCM7z7Yt5+lfAC4wMKAHxq1M5cVXrpN4eSKHdg=="
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
+          media="all"
+        />
+        <link
+          rel="preload"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          as="style"
+          media="all"
         />
 
         

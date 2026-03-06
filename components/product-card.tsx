@@ -75,19 +75,16 @@ export function ProductCard({ product }: { product: Product }) {
         {/* Rating */}
         <div className="mb-2 flex items-center gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
-            <svg
+            <i
               key={i}
-              className={`w-3 h-3 ${
+              className={`fa-star text-xs ${
                 i < Math.floor(product.rating)
-                  ? 'fill-[var(--yellow)]'
+                  ? 'fa-solid fill-[var(--yellow)]'
                   : i < product.rating
-                  ? 'fill-[var(--yellow)]'
-                  : 'fill-gray-300'
+                  ? 'fa-solid fill-[var(--yellow)]'
+                  : 'fa-regular text-gray-300'
               }`}
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-            </svg>
+            />
           ))}
           <span className="ml-1 text-[10px] text-muted-foreground">({product.review_count})</span>
         </div>
@@ -122,16 +119,12 @@ export function ProductCard({ product }: { product: Product }) {
         >
           {isAdding ? (
             <>
-              <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-              </svg>
+              <i className="fa-solid fa-spinner animate-spin text-sm"></i>
               Adding...
             </>
           ) : (
             <>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
+              <i className="fa-solid fa-shopping-cart text-sm"></i>
               Add to Cart
             </>
           )}
