@@ -145,7 +145,7 @@ export default function ShopPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-muted/30 flex items-center justify-center">
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center" suppressHydrationWarning>
         <div className="text-center max-w-md">
           <div className="h-20 w-20 rounded-full bg-[var(--navy)]/10 flex items-center justify-center mx-auto mb-6">
             <i className="fa-solid fa-lock text-4xl text-[var(--navy)]"></i>

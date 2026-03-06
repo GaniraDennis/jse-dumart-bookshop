@@ -25,7 +25,7 @@ export default function CheckoutPage() {
   // Check authentication
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4" suppressHydrationWarning>
         <div className="text-center max-w-md">
           <div className="h-20 w-20 rounded-full bg-[var(--navy)]/10 flex items-center justify-center mx-auto mb-6">
             <i className="fa-solid fa-lock text-4xl text-[var(--navy)]"></i>
@@ -46,7 +46,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4">
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4" suppressHydrationWarning>
         <div className="text-center max-w-md">
           <i className="fa-solid fa-shopping-cart text-5xl text-muted-foreground/30 mb-4"></i>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Cart is Empty</h2>

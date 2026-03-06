@@ -126,14 +126,14 @@ export function HeroSection() {
 
       {/* Nav arrows */}
       <button
-        onClick={() => setCurrent((slideIndex - 1 + slides.length) % slides.length)}
+        onClick={() => setCurrent((current - 1 + slides.length) % slides.length)}
         className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Previous slide"
       >
         <i className="fa-solid fa-chevron-left text-sm"></i>
       </button>
       <button
-        onClick={() => setCurrent((slideIndex + 1) % slides.length)}
+        onClick={() => setCurrent((current + 1) % slides.length)}
         className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Next slide"
       >
