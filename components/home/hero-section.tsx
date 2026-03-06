@@ -42,23 +42,17 @@ const slides = [
 export function HeroSection() {
   const [current, setCurrent] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!isMounted || isPaused) return
+    if (isPaused) return
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [isPaused, isMounted])
+  }, [isPaused])
 
-  // Always render the first slide on server, switch to current on client
-  const slideIndex = isMounted ? current : 0
-  const slide = slides[slideIndex]
+  // Use current slide index for both server and client to avoid hydration mismatch
+  const slide = slides[current]
   const iconClass = iconMap[slide.icon]
 
   return (
@@ -123,7 +117,7 @@ export function HeroSection() {
             key={i}
             onClick={() => setCurrent(i)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              i === slideIndex ? "w-8 bg-white" : "w-2 bg-white/40"
+              i === current ? "w-8 bg-white" : "w-2 bg-white/40"
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />
@@ -136,18 +130,14 @@ export function HeroSection() {
         className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Previous slide"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-        </svg>
+        <i className="fa-solid fa-chevron-left text-sm"></i>
       </button>
       <button
         onClick={() => setCurrent((slideIndex + 1) % slides.length)}
         className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Next slide"
       >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
+        <i className="fa-solid fa-chevron-right text-sm"></i>
       </button>
     </section>
   )
