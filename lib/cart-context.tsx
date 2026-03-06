@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react"
 
 export interface Product {
+  salePrice: number
   id: string
   name: string
   slug: string
