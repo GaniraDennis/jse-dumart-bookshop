@@ -41,14 +41,12 @@ export default function CheckoutPage() {
 
   const handleMpesaPayment = async () => {
     setIsProcessing(true)
-    setMpesaPromptSent(false)
-
-    // Simulate STK Push delay
-    await new Promise((r) => setTimeout(r, 1500))
+    // Show paybill details to user - they will send payment manually
     setMpesaPromptSent(true)
-
-    // Simulate waiting for M-Pesa confirmation
-    await new Promise((r) => setTimeout(r, 3000))
+    
+    // Complete order immediately with paybill pending status
+    await new Promise((r) => setTimeout(r, 1000))
+    
     setIsProcessing(false)
     setOrderPlaced(true)
     clearCart()
@@ -473,37 +471,41 @@ export default function CheckoutPage() {
                   </button>
                 </div>
 
-                {/* M-Pesa Phone Input */}
+                {/* M-Pesa Paybill Details */}
                 {paymentMethod === "mpesa" && (
                   <div className="mt-6 animate-fade-in rounded-xl border border-[#4caf50]/20 bg-[#4caf50]/5 p-5">
                     <div className="mb-4 flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4caf50]">
-                        <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
-                        </svg>
+                        <i className="fa-brands fa-m text-white font-bold" />
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-foreground">M-Pesa Payment</p>
-                        <p className="text-xs text-muted-foreground">Enter your Safaricom number to receive STK push</p>
+                        <p className="text-sm font-semibold text-foreground">M-Pesa Paybill Payment</p>
+                        <p className="text-xs text-muted-foreground">Use your M-Pesa to pay via paybill</p>
                       </div>
                     </div>
-                    <div className="relative">
-                      <span className="absolute left-4 top-3.5 text-sm font-medium text-muted-foreground">+254</span>
-                      <input
-                        type="tel"
-                        value={mpesaPhone}
-                        onChange={(e) => setMpesaPhone(e.target.value)}
-                        placeholder="7XX XXX XXX"
-                        maxLength={13}
-                        className="w-full rounded-lg border border-[#4caf50]/30 bg-white py-3 pl-16 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-[#4caf50] focus:outline-none focus:ring-2 focus:ring-[#4caf50]/20"
-                      />
+                    <div className="space-y-3">
+                      <div className="rounded-lg bg-white p-4 border border-[#4caf50]/20">
+                        <p className="text-xs text-muted-foreground mb-1">Business/Till Number</p>
+                        <p className="text-2xl font-bold text-[#4caf50]">7815771</p>
+                      </div>
+                      <div className="rounded-lg bg-white p-4 border border-[#4caf50]/20">
+                        <p className="text-xs text-muted-foreground mb-1">Amount to Pay</p>
+                        <p className="text-2xl font-bold text-foreground">{formatPrice(grandTotal)}</p>
+                      </div>
+                      <div className="rounded-lg bg-white p-4 border border-[#4caf50]/20">
+                        <p className="text-xs text-muted-foreground mb-1">Your Order Reference</p>
+                        <p className="text-lg font-mono font-bold text-[var(--teal)]">JSE{Date.now().toString().slice(-6)}</p>
+                      </div>
                     </div>
-                    <div className="mt-3 flex items-start gap-2">
-                      <svg className="h-4 w-4 mt-0.5 text-[#4caf50] shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-                      </svg>
-                      <p className="text-[11px] text-muted-foreground">
-                        You will receive an STK push notification on your phone. Send to Till <strong className="text-foreground">7815771</strong>. Enter your M-Pesa PIN to complete the payment of <strong className="text-foreground">{formatPrice(grandTotal)}</strong>.
+                    <div className="mt-4 bg-[#4caf50]/10 rounded-lg p-3 border-l-4 border-[#4caf50]">
+                      <p className="text-xs text-muted-foreground">
+                        <strong className="text-foreground block mb-1">Payment Steps:</strong>
+                        1. Open M-Pesa on your phone<br/>
+                        2. Go to Lipa Na M-Pesa → Paybill<br/>
+                        3. Enter Business No: <strong>7815771</strong><br/>
+                        4. Enter Account Ref: <strong>JSE{Date.now().toString().slice(-6)}</strong><br/>
+                        5. Enter Amount: <strong>{formatPrice(grandTotal)}</strong><br/>
+                        6. Enter your M-Pesa PIN and confirm
                       </p>
                     </div>
                   </div>
@@ -562,7 +564,9 @@ export default function CheckoutPage() {
                 <div className="rounded-2xl border border-border bg-white p-6 shadow-sm">
                   <div className="mb-4 flex items-center justify-between">
                     <h3 className="flex items-center gap-2 font-bold text-foreground">
-                      <i className="fa-solid fa-credit-card text-[var(--teal)]" />
+                      <svg className="h-5 w-5 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 8H4V4h16m0 12H4v-6h16m0 8H4c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v16c0 1.1-.9 2-2 2z"/>
+                      </svg>
                       Payment Method
                     </h3>
                     <button onClick={() => setStep("payment")} className="text-xs font-medium text-[var(--teal)] hover:underline">
@@ -572,7 +576,9 @@ export default function CheckoutPage() {
                   {paymentMethod === "mpesa" ? (
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#4caf50]">
-                        <i className="fa-solid fa-mobile-screen-button text-white" />
+                        <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H7V4h10v16z" />
+                        </svg>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-foreground">M-Pesa</p>
@@ -582,7 +588,9 @@ export default function CheckoutPage() {
                   ) : (
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--yellow)]">
-                        <i className="fa-solid fa-money-bill-wave text-[var(--navy)]" />
+                        <svg className="h-5 w-5 text-[var(--navy)]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                        </svg>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-foreground">Cash on Delivery</p>
@@ -595,7 +603,9 @@ export default function CheckoutPage() {
                 {/* Items Summary */}
                 <div className="rounded-2xl border border-border bg-white p-6 shadow-sm">
                   <h3 className="mb-4 flex items-center gap-2 font-bold text-foreground">
-                    <i className="fa-solid fa-box text-[var(--teal)]" />
+                    <svg className="h-5 w-5 text-[var(--teal)]" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M21 16V8c0-1.1-.9-2-2-2h-3V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-16 0V8h14v8H5z"/>
+                    </svg>
                     Order Items ({items.length})
                   </h3>
                   <div className="space-y-3">
