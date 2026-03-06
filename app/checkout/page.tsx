@@ -22,6 +22,47 @@ export default function CheckoutPage() {
   const [orderPlaced, setOrderPlaced] = useState(false)
   const [mpesaPromptSent, setMpesaPromptSent] = useState(false)
 
+  // Check authentication
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <div className="h-20 w-20 rounded-full bg-[var(--navy)]/10 flex items-center justify-center mx-auto mb-6">
+            <i className="fa-solid fa-lock text-4xl text-[var(--navy)]"></i>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Login Required</h2>
+          <p className="text-gray-600 mb-6">You need to be logged in to proceed with checkout.</p>
+          <button 
+            onClick={() => router.push('/login?redirect=/checkout')}
+            className="bg-[var(--navy)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--teal)] transition-all inline-flex items-center gap-2 w-full justify-center"
+          >
+            <i className="fa-solid fa-sign-in-alt"></i>
+            Sign In to Continue
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (items.length === 0) {
+    return (
+      <div className="min-h-screen bg-muted/30 flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <i className="fa-solid fa-shopping-cart text-5xl text-muted-foreground/30 mb-4"></i>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Your Cart is Empty</h2>
+          <p className="text-gray-600 mb-6">Add some items to your cart before checkout.</p>
+          <Link 
+            href="/shop"
+            className="bg-[var(--navy)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--teal)] transition-all inline-flex items-center gap-2"
+          >
+            <i className="fa-solid fa-arrow-left"></i>
+            Continue Shopping
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   const [shipping, setShipping] = useState({
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
