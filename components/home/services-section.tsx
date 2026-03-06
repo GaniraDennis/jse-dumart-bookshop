@@ -3,12 +3,12 @@
 import { useScrollAnimation } from "@/hooks/use-scroll-animation"
 
 const services = [
-  { icon: "fa-truck-fast", title: "Free Delivery", desc: "Free within Nairobi CBD", color: "var(--teal)" },
+  { icon: "fa-truck", title: "Free Delivery", desc: "Free within Nairobi CBD", color: "var(--teal)" },
   { icon: "fa-bolt", title: "Same Day Delivery", desc: "Order before 2PM", color: "var(--yellow)" },
-  { icon: "fa-money-bill-wave", title: "M-Pesa Accepted", desc: "Easy mobile payments", color: "var(--green)" },
-  { icon: "fa-shield-halved", title: "Quality Guaranteed", desc: "100% original products", color: "var(--navy)" },
+  { icon: "fa-mobile", title: "M-Pesa Accepted", desc: "Easy mobile payments", color: "var(--green)" },
+  { icon: "fa-shield", title: "Quality Guaranteed", desc: "100% original products", color: "var(--navy)" },
   { icon: "fa-headset", title: "Customer Support", desc: "WhatsApp & Phone", color: "var(--orange)" },
-  { icon: "fa-rotate-left", title: "Easy Returns", desc: "7-day return policy", color: "var(--teal)" },
+  { icon: "fa-redo", title: "Easy Returns", desc: "7-day return policy", color: "var(--teal)" },
 ]
 
 export function ServicesSection() {
@@ -32,7 +32,7 @@ export function ServicesSection() {
                 className="flex h-12 w-12 items-center justify-center rounded-full transition-all duration-500 group-hover:scale-125"
                 style={{ backgroundColor: `${svc.color}15`, color: svc.color }}
               >
-                <i className={`fa-solid ${svc.icon} text-lg transition-transform group-hover:rotate-12`} />
+                <i className={`fa-solid ${svc.icon} text-lg`}></i>
               </div>
               <h3 className="text-xs font-semibold text-foreground">{svc.title}</h3>
               <p className="text-[10px] text-muted-foreground">{svc.desc}</p>

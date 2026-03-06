@@ -44,24 +44,24 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-1.5 text-xs">
           <div className="flex items-center gap-4">
             <a href="mailto:jsbookshop4@gmail.com" className="flex items-center gap-1 transition-colors hover:text-[var(--yellow)]">
-              <i className="fa-solid fa-envelope" />
+              <i className="fa-solid fa-envelope text-sm" />
               <span className="hidden sm:inline">jsbookshop4@gmail.com</span>
             </a>
             <a href="tel:+254704454556" className="flex items-center gap-1 transition-colors hover:text-[var(--yellow)]">
-              <i className="fa-solid fa-phone" />
+              <i className="fa-solid fa-phone text-sm" />
               <span>+254 704 454556</span>
             </a>
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden md:inline">Free delivery in Nairobi CBD</span>
             <a href="https://wa.me/254704454556" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-[var(--green)]">
-              <i className="fa-brands fa-whatsapp text-sm" />
+              <i className="fa-brands fa-whatsapp text-lg" />
             </a>
             <a href="#" className="transition-colors hover:text-[var(--teal)]">
-              <i className="fa-brands fa-facebook text-sm" />
+              <i className="fa-brands fa-facebook text-lg" />
             </a>
             <a href="#" className="transition-colors hover:text-[var(--teal)]">
-              <i className="fa-brands fa-instagram text-sm" />
+              <i className="fa-brands fa-instagram text-lg" />
             </a>
           </div>
         </div>
@@ -117,7 +117,7 @@ export function Navbar() {
                 className="absolute right-1 top-1 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--navy)] text-white transition-colors hover:bg-[var(--teal)]"
                 aria-label="Search"
               >
-                <i className="fa-solid fa-magnifying-glass text-xs" />
+                <i className="fa-solid fa-search text-xs" />
               </button>
             </form>
           </div>
@@ -234,11 +234,11 @@ export function Navbar() {
                   {items.slice(-2).map((item) => (
                     <div key={item.product.id} className="flex items-center gap-3 rounded-lg bg-muted/50 p-2">
                       <div className="h-12 w-12 overflow-hidden rounded-lg bg-muted">
-                        <img src={item.product.image} alt={item.product.name} className="h-full w-full object-cover" />
+                        <img src={item.product.image_url} alt={item.product.name} className="h-full w-full object-cover" />
                       </div>
                       <div className="flex-1">
                         <p className="text-xs font-medium text-foreground line-clamp-1">{item.product.name}</p>
-                        <p className="text-xs text-[var(--teal)]">{formatPrice(item.product.salePrice ?? item.product.price)} x{item.quantity}</p>
+                        <p className="text-xs text-[var(--teal)]">{formatPrice(item.product.sale_price ?? item.product.price)} x{item.quantity}</p>
                       </div>
                       <button onClick={() => removeFromCart(item.product.id)} className="text-muted-foreground hover:text-destructive">
                         <i className="fa-solid fa-xmark text-xs" />

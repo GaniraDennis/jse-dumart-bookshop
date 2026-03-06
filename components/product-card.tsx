@@ -3,7 +3,33 @@
 import Link from "next/link"
 import { useState } from "react"
 import { useCart } from "@/lib/cart-context"
-import { formatPrice, type Product } from "@/lib/data"
+
+export interface Product {
+  id: string
+  name: string
+  slug: string
+  category: string
+  brand?: string
+  description: string
+  price: number
+  sale_price?: number
+  discount?: number
+  in_stock: boolean
+  image_url: string
+  rating: number
+  review_count: number
+  featured: boolean
+  new_arrival: boolean
+}
+
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat('en-KE', {
+    style: 'currency',
+    currency: 'KES',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(price)
+}
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart()
@@ -17,13 +43,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-xl border border-border bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      {/* Discount badge */}
-      {product.discount > 0 && (
-        <span className="absolute left-3 top-3 z-10 rounded-full bg-[var(--orange)] px-2.5 py-0.5 text-[10px] font-bold text-white">
-          -{product.discount}%
-        </span>
-      )}
-      {product.newArrival && (
+      {/* New arrival badge */}
+      {product.new_arrival && (
         <span className="absolute right-3 top-3 z-10 rounded-full bg-[var(--green)] px-2.5 py-0.5 text-[10px] font-bold text-white">
           NEW
         </span>
@@ -32,7 +53,7 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Image */}
       <Link href={`/product/${product.slug}`} className="relative aspect-[4/5] overflow-hidden bg-muted">
         <img
-          src={product.image}
+          src={product.image_url}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
@@ -56,18 +77,24 @@ export function ProductCard({ product }: { product: Product }) {
           {Array.from({ length: 5 }).map((_, i) => (
             <i
               key={i}
-              className={`fa-${i < Math.floor(product.rating) ? "solid" : i < product.rating ? "solid fa-star-half-stroke" : "regular"} fa-star text-[10px] text-[var(--yellow)]`}
+              className={`fa-star text-xs ${
+                i < Math.floor(product.rating)
+                  ? 'fa-solid fill-[var(--yellow)]'
+                  : i < product.rating
+                  ? 'fa-solid fill-[var(--yellow)]'
+                  : 'fa-regular text-gray-300'
+              }`}
             />
           ))}
-          <span className="ml-1 text-[10px] text-muted-foreground">({product.reviewCount})</span>
+          <span className="ml-1 text-[10px] text-muted-foreground">({product.review_count})</span>
         </div>
 
         {/* Price */}
         <div className="mt-auto flex items-center gap-2">
-          {product.salePrice ? (
+          {product.sale_price ? (
             <>
               <span className="text-base font-bold text-[var(--navy)]">
-                {formatPrice(product.salePrice)}
+                {formatPrice(product.sale_price)}
               </span>
               <span className="text-xs text-muted-foreground line-through">
                 {formatPrice(product.price)}
@@ -90,8 +117,17 @@ export function ProductCard({ product }: { product: Product }) {
               : "bg-[var(--navy)] text-white hover:bg-[var(--teal)]"
           }`}
         >
-          <i className={`fa-solid ${isAdding ? "fa-check" : "fa-cart-plus"}`} />
-          {isAdding ? "Added!" : "Add to Cart"}
+          {isAdding ? (
+            <>
+              <i className="fa-solid fa-spinner animate-spin text-sm"></i>
+              Adding...
+            </>
+          ) : (
+            <>
+              <i className="fa-solid fa-shopping-cart text-sm"></i>
+              Add to Cart
+            </>
+          )}
         </button>
       </div>
     </div>

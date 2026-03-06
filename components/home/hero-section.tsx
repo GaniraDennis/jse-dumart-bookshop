@@ -3,6 +3,12 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 
+const iconMap = {
+  school: 'fa-school',
+  graduation: 'fa-graduation-cap',
+  palette: 'fa-palette',
+}
+
 const slides = [
   {
     title: "Back to School 2026",
@@ -11,7 +17,7 @@ const slides = [
     href: "/shop",
     bg: "from-[var(--navy)] to-[#2d4a7c]",
     accent: "var(--yellow)",
-    icon: "fa-school",
+    icon: "school" as const,
   },
   {
     title: "KCSE Revision Materials",
@@ -20,7 +26,7 @@ const slides = [
     href: "/shop?category=revision",
     bg: "from-[#0c4a6e] to-[var(--teal)]",
     accent: "var(--yellow)",
-    icon: "fa-graduation-cap",
+    icon: "graduation" as const,
   },
   {
     title: "Art Supplies Sale",
@@ -29,7 +35,7 @@ const slides = [
     href: "/shop?category=art-supplies",
     bg: "from-[#7c2d12] to-[var(--orange)]",
     accent: "#fef3c7",
-    icon: "fa-palette",
+    icon: "palette" as const,
   },
 ]
 
@@ -45,7 +51,9 @@ export function HeroSection() {
     return () => clearInterval(timer)
   }, [isPaused])
 
+  // Use current slide index for both server and client to avoid hydration mismatch
   const slide = slides[current]
+  const iconClass = iconMap[slide.icon]
 
   return (
     <section
@@ -63,14 +71,9 @@ export function HeroSection() {
 
         <div className="relative mx-auto flex w-full max-w-7xl items-center gap-8 px-4 py-16">
           <div className="max-w-xl">
-            <div
-              key={current}
-              className="animate-fade-in-up"
-            >
-              <span
-                className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm"
-              >
-                <i className={`fa-solid ${slide.icon}`} />
+            <div className="animate-fade-in-up">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
+                <i className={`fa-solid ${iconClass} text-sm`}></i>
                 JSEdumart Bookstore
               </span>
               <h1 className="mb-4 text-balance text-3xl font-extrabold leading-tight text-white md:text-5xl">
@@ -86,7 +89,7 @@ export function HeroSection() {
                   style={{ backgroundColor: slide.accent }}
                 >
                   {slide.cta}
-                  <i className="fa-solid fa-arrow-right text-xs" />
+                  <i className="fa-solid fa-arrow-right text-sm"></i>
                 </Link>
                 <Link
                   href="/shop"
@@ -100,10 +103,8 @@ export function HeroSection() {
 
           {/* Big icon decoration */}
           <div className="hidden flex-1 items-center justify-center lg:flex">
-            <div key={current} className="animate-scale-in">
-              <i
-                className={`fa-solid ${slide.icon} text-[180px] text-white/10`}
-              />
+            <div className="animate-scale-in">
+              <i className={`fa-solid ${iconClass} text-[180px] text-white/10`}></i>
             </div>
           </div>
         </div>
@@ -129,14 +130,14 @@ export function HeroSection() {
         className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Previous slide"
       >
-        <i className="fa-solid fa-chevron-left text-sm" />
+        <i className="fa-solid fa-chevron-left text-sm"></i>
       </button>
       <button
         onClick={() => setCurrent((current + 1) % slides.length)}
         className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20"
         aria-label="Next slide"
       >
-        <i className="fa-solid fa-chevron-right text-sm" />
+        <i className="fa-solid fa-chevron-right text-sm"></i>
       </button>
     </section>
   )
