@@ -9,11 +9,13 @@ interface User {
   email: string
   phone?: string
   isEmailVerified?: boolean
+  role: "buyer" | "admin"
 }
 
 interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
+  isAdmin: boolean
   login: (email: string, password: string) => Promise<boolean>
   register: (data: RegisterData) => Promise<{ success: boolean; message: string }>
   verifyEmail: (email: string, code: string) => Promise<boolean>
@@ -34,7 +36,36 @@ interface RegisterData {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 // Mock database of users
-const mockUsers: Map<string, User & { password: string; emailVerified: boolean }> = new Map()
+const mockUsers: Map<string, User & { password: string; emailVerified: boolean }> = new Map([
+  [
+    "admin@jsdumart.com",
+    {
+      id: "admin-001",
+      firstName: "Admin",
+      lastName: "User",
+      email: "admin@jsdumart.com",
+      phone: "+254704454556",
+      isEmailVerified: true,
+      role: "admin",
+      password: "admin@123",
+      emailVerified: true,
+    },
+  ],
+  [
+    "buyer@jsdumart.com",
+    {
+      id: "buyer-001",
+      firstName: "John",
+      lastName: "Buyer",
+      email: "buyer@jsdumart.com",
+      phone: "+254712345678",
+      isEmailVerified: true,
+      role: "buyer",
+      password: "buyer@123",
+      emailVerified: true,
+    },
+  ],
+])
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -68,6 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email: userData.email,
       phone: userData.phone,
       isEmailVerified: true,
+      role: userData.role,
     })
     return true
   }, [])
@@ -93,6 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       phone: data.phone,
       password: data.password,
       emailVerified: false,
+      role: "buyer" as const,
     }
 
     mockUsers.set(emailLower, newUser)
@@ -130,6 +163,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email: userData.email,
       phone: userData.phone,
       isEmailVerified: true,
+      role: userData.role,
     })
 
     return true
@@ -184,6 +218,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isAuthenticated: !!user,
+        isAdmin: user?.role === "admin" ?? false,
         login,
         register,
         verifyEmail,
