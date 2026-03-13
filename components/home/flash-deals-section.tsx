@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { getProducts } from "@/lib/supabase/products"
 import { ProductCard } from "@/components/product-card"
 
 export interface Product {
@@ -46,9 +45,9 @@ export function FlashDealsSection() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const allProducts = await getProducts()
-        // Show 8 products from Supabase
-        setProducts(allProducts.slice(0, 8))
+        const response = await fetch('/api/products?limit=8')
+        const data = await response.json()
+        setProducts(data)
       } catch (error) {
         console.error('[v0] Error fetching flash deals:', error)
       } finally {

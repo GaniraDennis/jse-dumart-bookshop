@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { getProducts } from "@/lib/supabase/products"
 import { ProductCard } from "@/components/product-card"
 
 export interface Product {
@@ -33,9 +32,9 @@ export function FeaturedSection() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const allProducts = await getProducts()
-        // Show all products from Supabase
-        setProducts(allProducts.slice(0, 12))
+        const response = await fetch('/api/products?limit=12')
+        const data = await response.json()
+        setProducts(data)
       } catch (error) {
         console.error('[v0] Error fetching featured products:', error)
       } finally {

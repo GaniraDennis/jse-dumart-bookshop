@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getProducts, createProduct } from '@/lib/supabase/products'
+import { products, Product } from '@/lib/products-data'
 
 export async function GET(request: NextRequest) {
   try {
@@ -10,36 +10,27 @@ export async function GET(request: NextRequest) {
     const featured = searchParams.get('featured') === 'true'
     const trending = searchParams.get('trending') === 'true'
 
-    const products = await getProducts({
-      category,
-      limit,
-      offset,
-      featured,
-      trending,
-    })
+    let filtered = [...products]
 
-    return NextResponse.json(products)
+    if (category) {
+      filtered = filtered.filter(p => p.category === category)
+    }
+
+    if (featured) {
+      filtered = filtered.filter(p => p.featured)
+    }
+
+    if (trending) {
+      filtered = filtered.filter(p => p.trending)
+    }
+
+    const result = filtered.slice(offset, offset + limit)
+
+    return NextResponse.json(result)
   } catch (error) {
     console.error('Error fetching products:', error)
     return NextResponse.json(
       { error: 'Failed to fetch products' },
-      { status: 500 }
-    )
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-
-    // Verify admin (would need auth middleware)
-    const product = await createProduct(body)
-
-    return NextResponse.json(product, { status: 201 })
-  } catch (error) {
-    console.error('Error creating product:', error)
-    return NextResponse.json(
-      { error: 'Failed to create product' },
       { status: 500 }
     )
   }
